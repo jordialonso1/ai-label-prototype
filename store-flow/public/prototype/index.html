@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<!--
+  PINTXO PROTOTYPE BOILERPLATE
+  ============================
+  Before using:
+  1. Copy the fonts/ folder from AI Prototyping Context V2/ into the same
+     folder as your prototype HTML. The @font-face blocks reference them
+     by relative path — no encoding needed.
+  2. Set lang="" to the correct locale (e.g. "es", "en", "ar").
+  3. Set data-ui-mode to "light" or "dark" to match the Figma frame.
+  4. Set the viewport width to the target device:
+       Mobile  -> max-width: 390px  (default, already set)
+       Tablet  -> max-width: 768px
+       Desktop -> max-width: 1280px  (remove the centering wrapper if full-bleed)
+-->
+<html lang="en" data-theme="core" data-ui-mode="light">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:," />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store flow prototype</title>
+
+  <style>
+    /* =====================================================================
+       FONTS — loaded from the fonts/ folder sitting next to this file.
+       Copy fonts/ from AI Prototyping Context V2/ into your output folder.
+       Do NOT inline or base64-encode these. Do not modify these @font-face
+       blocks in any way when generating a prototype.
+       ===================================================================== */
+    @font-face {
+      font-family: 'Glovo Sans';
+      src: url(fonts/GlovoSans-Book.woff2) format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Glovo Sans';
+      src: url(fonts/GlovoSans-Medium.woff2) format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Glovo Sans';
+      src: url(fonts/GlovoSans-Bold.woff2) format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* =====================================================================
+       DESIGN TOKENS — Core theme (light mode)
+       Source: uds-react/src/generated/style/
+         core-theme-constants.scss  (geometry — same for light and dark)
+         core-theme-mode-colors.scss (colors — light mixin shown here)
+       To switch to dark mode: change data-ui-mode="dark" on <html> AND
+       swap in the dark-mode color values from core-dark-css-variables mixin.
+       ===================================================================== */
+    :root,
+    [data-theme="core"] {
+      /* -- Spacing scale -------------------------------------------------- */
+      --spacing-none:  0px;
+      --spacing-xxxs:  2px;
+      --spacing-xxs:   4px;
+      --spacing-xs:    8px;
+      --spacing-s:    12px;
+      --spacing-m:    16px;
+      --spacing-l:    24px;
+      --spacing-xl:   32px;
+      --spacing-xxl:  48px;
+      --spacing-xxxl: 64px;
+      --spacing-xxxxl: 80px;
+
+      /* -- Corner radius scale --------------------------------------------- */
+      --cornerRadius-none:  0px;
+      --cornerRadius-xxxs:  2px;
+      --cornerRadius-xxs:   4px;
+      --cornerRadius-xs:    8px;
+      --cornerRadius-s:    12px;
+      --cornerRadius-m:    16px;
+      --cornerRadius-l:    24px;
+      --cornerRadius-xl:   32px;
+      --cornerRadius-xxl:  48px;
+      --cornerRadius-full: 896px;
+
+      /* -- Border widths --------------------------------------------------- */
+      --border-width-none: 0px;
+      --border-width-s:    1px;
+      --border-width-m:    2px;
+      --border-width-l:    4px;
+
+      /* -- Icon sizes ----------------------------------------------------- */
+      --icon-size-s:  16px;
+      --icon-size-m:  24px;
+      --icon-size-l:  32px;
+      --icon-size-xl: 48px;
+
+      /* -- Elevation shadows ----------------------------------------------- */
+      --elevation-shadow-basic-color:    rgba(22, 23, 23, 0.05);
+      --elevation-shadow-raised-color:   rgba(22, 23, 23, 0.21);
+      --elevation-shadow-floating-color: rgba(22, 23, 23, 0.21);
+
+      /* -- Semantic text colors (light) ------------------------------------ */
+      --text-color-primary:        rgba(22, 22, 23, 1);    /* gray9  */
+      --text-color-secondary:      rgba(98, 99, 100, 1);   /* gray39 */
+      --text-color-disabled:       rgba(167, 168, 170, 1); /* gray66 */
+      --text-color-critical:       rgba(212, 22, 22, 1);   /* red46  */
+      --text-color-positive:       rgba(1, 121, 99, 1);    /* green24 */
+      --text-color-warning:        rgba(137, 97, 16, 1);   /* yellow30 */
+      --text-color-marketing:      rgba(19, 114, 170, 1);  /* blue38 */
+      --text-color-persistentLight: rgba(255, 255, 255, 1);
+      --text-color-persistentDark:  rgba(22, 22, 23, 1);
+
+      /* -- Semantic background colors (light) ------------------------------ */
+      --background-color-primary:    rgba(255, 255, 255, 1);  /* white */
+      --background-color-secondary:  rgba(242, 242, 243, 1);  /* gray95 */
+      --background-color-critical:   rgba(249, 235, 235, 1);  /* red95 */
+      --background-color-positive:   rgba(224, 240, 237, 1);  /* green91 */
+      --background-color-warning:    rgba(249, 239, 220, 1);  /* yellow92 */
+      --background-color-marketing:  rgba(211, 231, 243, 1);  /* blue89 */
+      --background-color-loyalty:    rgba(230, 229, 246, 1);  /* purple93 */
+      --background-color-persistentLight: rgba(255, 255, 255, 1);
+      --background-color-persistentDark:  rgba(22, 22, 23, 1);
+
+      /* -- Semantic border colors (light) ---------------------------------- */
+      --border-color-primary:    rgba(205, 206, 208, 1);  /* gray81 */
+      --border-color-secondary:  rgba(242, 242, 243, 1);  /* gray95 */
+      --border-color-active:     rgba(0, 158, 129, 1);    /* green31 */
+      --border-color-critical:   rgba(212, 22, 22, 1);    /* red46  */
+      --border-color-warning:    rgba(236, 159, 4, 1);    /* yellow47 */
+      --border-color-marketing:  rgba(19, 114, 170, 1);   /* blue38 */
+      --border-color-loyalty:    rgba(89, 77, 219, 1);    /* purple58 */
+
+      /* -- Brand colors ---------------------------------------------------- */
+      --brand-color-primary:   rgba(255, 192, 66, 1);   /* yellow63 — Glovo yellow */
+      --brand-color-secondary: rgba(0, 158, 129, 1);    /* green31  — Glovo green  */
+
+      /* -- Semantic icon colors (light) ------------------------------------ */
+      --icon-color-foreground-primary:    rgba(22, 22, 23, 1);
+      --icon-color-foreground-secondary:  rgba(98, 99, 100, 1);
+      --icon-color-foreground-disabled:   rgba(167, 168, 170, 1);
+      --icon-color-foreground-critical:   rgba(212, 22, 22, 1);
+      --icon-color-foreground-positive:   rgba(1, 121, 99, 1);
+      --icon-color-foreground-warning:    rgba(137, 97, 16, 1);
+      --icon-color-foreground-marketing:  rgba(19, 114, 170, 1);
+      --icon-color-foreground-persistentLight: rgba(255, 255, 255, 1);
+      --icon-color-foreground-persistentDark:  rgba(22, 22, 23, 1);
+
+      /* -- Button (primary variant, light) --------------------------------- */
+      --component-button-background-color-primary-enabled:  rgba(1, 121, 99, 1);    /* green24 */
+      --component-button-background-color-primary-hover:    rgba(3, 89, 73, 1);     /* green18 */
+      --component-button-background-color-primary-pressed:  rgba(3, 89, 73, 1);     /* green18 */
+      --component-button-background-color-primary-disabled: rgba(205, 206, 208, 1); /* gray81 */
+      --component-button-icon-color-foreground-primary-enabled:  rgba(255, 255, 255, 1);
+      --component-button-icon-color-foreground-primary-disabled: rgba(98, 99, 100, 1);
+      --component-button-cornerRadius: 896px;
+      --component-button-minHeight-s: 40px;
+      --component-button-minHeight-m: 48px;
+      --component-button-minHeight-l: 64px;
+
+      /* -- RadioButton (light) --------------------------------------------- */
+      --component-radioButton-background-color-enabled-selected:   rgba(0, 158, 129, 1);    /* green31 */
+      --component-radioButton-background-color-enabled-unselected: rgba(242, 242, 243, 1);  /* gray95  */
+      --component-radioButton-border-color-enabled-unselected:     rgba(98, 99, 100, 1);    /* gray39  */
+      --component-radioButton-thumb-color-enabled-selected:        rgba(255, 255, 255, 1);
+
+      /* -- ListItem (light) ------------------------------------------------ */
+      --component-listItem-cornerRadius: 0px;
+      --component-listItem-padding-horizontal: 16px;
+      --component-listItem-padding-vertical:   12px;
+      --component-listItem-gap:                16px;
+    }
+
+    /* =====================================================================
+       TYPOGRAPHY UTILITY CLASSES
+       Mirror of pintxo-typography-* classes from uds-react.
+       Font sizes in px, line heights in px — matching the token scale.
+       ===================================================================== */
+    .pintxo-typography-feature1 { font-size: 64px; line-height: 72px; font-weight: 700; letter-spacing: 0; }
+    .pintxo-typography-feature2 { font-size: 49px; line-height: 56px; font-weight: 700; letter-spacing: 0; }
+    .pintxo-typography-feature3 { font-size: 37px; line-height: 44px; font-weight: 700; letter-spacing: 0; }
+    .pintxo-typography-title1   { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: 0; }
+    .pintxo-typography-title2   { font-size: 24px; line-height: 32px; font-weight: 700; letter-spacing: 0; }
+    .pintxo-typography-title3   { font-size: 21px; line-height: 28px; font-weight: 700; letter-spacing: 0; }
+    .pintxo-typography-callout1 { font-size: 18px; line-height: 24px; font-weight: 500; letter-spacing: 0; }
+    .pintxo-typography-callout2 { font-size: 16px; line-height: 24px; font-weight: 500; letter-spacing: 0; }
+    .pintxo-typography-callout3 { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; }
+    .pintxo-typography-body1          { font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: 0; }
+    .pintxo-typography-body1-emphasis  { font-size: 16px; line-height: 24px; font-weight: 500; letter-spacing: 0; }
+    .pintxo-typography-body1-link      { font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: 0; text-decoration: underline; }
+    .pintxo-typography-body2          { font-size: 14px; line-height: 20px; font-weight: 400; letter-spacing: 0; }
+    .pintxo-typography-body2-emphasis  { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; }
+    .pintxo-typography-body2-link      { font-size: 14px; line-height: 20px; font-weight: 400; letter-spacing: 0; text-decoration: underline; }
+    .pintxo-typography-caption         { font-size: 12px; line-height: 16px; font-weight: 400; letter-spacing: 0; }
+    .pintxo-typography-caption-emphasis { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0; }
+    .pintxo-typography-caption-link    { font-size: 12px; line-height: 16px; font-weight: 400; letter-spacing: 0; text-decoration: underline; }
+
+    /* =====================================================================
+       ELEVATION UTILITY CLASSES
+       ===================================================================== */
+    .pintxo-elevation-hollow  { box-shadow: none; }
+    .pintxo-elevation-primary { box-shadow: 0 0 2px 0 var(--elevation-shadow-basic-color); }
+    .pintxo-elevation-raised  { box-shadow: 0 0 8px 0 var(--elevation-shadow-raised-color); }
+    .pintxo-elevation-floating { box-shadow: 0 0 24px 0 var(--elevation-shadow-floating-color); }
+
+    /* =====================================================================
+       RESET & BASE
+       ===================================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Glovo Sans', Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--text-color-primary);
+      background: var(--background-color-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =====================================================================
+       DEVICE VIEWPORT WRAPPER
+       Simulates a mobile frame (390px). Adjust max-width for tablet/desktop.
+       ===================================================================== */
+    .prototype-viewport {
+      max-width: 390px;  /* Mobile (iPhone 14). Change to 768px (tablet) or 1280px (desktop) */
+      min-height: 100svh;
+      margin: 0 auto;
+      background: var(--background-color-primary);
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+
+  <style>
+    /* =====================================================================
+       PROTOTYPE OVERRIDES (added; the boilerplate blocks above are untouched)
+
+       1. Typography: Figma / uds-react scale takes precedence over the
+          boilerplate pintxo-typography-* values (user decision).
+          Figma: title1 28/32, title2 24/28, title3 21/24, callout1 16/20,
+          callout2 14/20, body 16/20 and 14/20, caption 12/16.
+       ===================================================================== */
+    .pintxo-typography-title1   { font-size: 28px; line-height: 32px; font-weight: 700; }
+    .pintxo-typography-title2   { font-size: 24px; line-height: 28px; font-weight: 700; }
+    .pintxo-typography-title3   { font-size: 21px; line-height: 24px; font-weight: 700; }
+    .pintxo-typography-callout1 { font-size: 16px; line-height: 20px; font-weight: 700; }
+    .pintxo-typography-callout2 { font-size: 14px; line-height: 20px; font-weight: 700; }
+    .pintxo-typography-body1          { font-size: 16px; line-height: 20px; font-weight: 400; }
+    .pintxo-typography-body1-emphasis { font-size: 16px; line-height: 20px; font-weight: 500; }
+    .pintxo-typography-body2          { font-size: 14px; line-height: 20px; font-weight: 400; }
+    .pintxo-typography-body2-emphasis { font-size: 14px; line-height: 20px; font-weight: 500; }
+    .pintxo-typography-caption          { font-size: 12px; line-height: 16px; font-weight: 400; }
+    .pintxo-typography-caption-emphasis { font-size: 12px; line-height: 16px; font-weight: 500; }
+
+    /* 2. Viewport: fixed height so each screen scrolls internally and the
+          chrome (header / tab bar / footer) stays put. */
+    .prototype-viewport { min-height: 0; height: 100svh; }
+
+    /* 3. Screens. Only one is visible at a time. Each screen is a column:
+          [fixed top chrome] [scrolling content] [fixed bottom chrome]. */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      background: var(--background-color-primary);
+    }
+    .screen.is-active { display: flex; }
+    .screen__scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    .screen__scroll::-webkit-scrollbar { display: none; }
+
+    /* 4. Shared helpers */
+    button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+    img { display: block; }
+    [data-nav], [data-back] { cursor: pointer; }
+    .inert { cursor: default; }
+
+    /* 5. Shared components (used by more than one screen) */
+    .blob16 { position: relative; width: 16px; height: 16px; flex: none; }
+    .blob16 img { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      min-height: 20px; padding: 2px 4px; border-radius: 4px;
+      font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap;
+    }
+    .tag--promo { background: #e70e42; color: #fff; }
+    .tag--neutral { background: var(--background-color-secondary); color: var(--text-color-primary); }
+    .tag img { width: 16px; height: 16px; }
+    .icon-btn {
+      display: flex; align-items: center; justify-content: center; flex: none;
+      border-radius: 896px; width: 40px; height: 40px;
+    }
+    .icon-btn--neutral { background: var(--background-color-secondary); }
+    .icon-btn--floating { background: #fff; border: 1px solid var(--border-color-primary); }
+    .icon-btn img { width: 24px; height: 24px; }
+    .sb {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 54px; padding-top: 21px; flex: none;
+    }
+    .sb__time {
+      flex: 1; text-align: center; line-height: 22px; font-size: 17px; font-weight: 600;
+      font-family: -apple-system, 'SF Pro', 'SF Pro Text', system-ui, sans-serif;
+    }
+    .sb__spacer { width: 164px; height: 10px; flex: none; }
+    .sb__levels { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 0 16px 0 6px; }
+    .sb__levels img:nth-child(1) { width: 19.2px; height: 12.226px; }
+    .sb__levels img:nth-child(2) { width: 17.142px; height: 12.328px; }
+    .sb__levels img:nth-child(3) { width: 27.328px; height: 13px; }
+
+    /* =====================================================================
+       STORE WALL (Figma 141:29412)
+       ===================================================================== */
+    .sw-header { background: var(--background-color-primary); }
+    .sw-nav { display: flex; flex-direction: column; gap: 24px; padding: 0 16px 8px; }
+    .sw-nav__row { display: flex; align-items: center; gap: 16px; min-height: 40px; }
+    .sw-nav__body { flex: 1; display: flex; justify-content: center; }
+    .sw-address {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 40px; min-width: 48px; max-width: 224px; padding: 8px;
+      background: var(--background-color-secondary); border-radius: 896px;
+    }
+    .sw-address span { padding: 0 4px; font-size: 14px; line-height: 20px; font-weight: 700; }
+    .sw-address img { width: 24px; height: 24px; }
+    .sw-nav__spacer { width: 40px; height: 40px; flex: none; }
+    .sw-nav__title { margin: 0; }
+    .sw-search { padding: 16px; }
+    .sw-search__input {
+      display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px;
+      background: var(--background-color-secondary); border: 1px solid var(--border-color-primary);
+      border-radius: 896px; color: #838486; font-size: 16px; line-height: 20px;
+    }
+    .sw-search__input img { width: 24px; height: 24px; }
+    .sw-cats { display: flex; padding: 8px 16px; overflow: hidden; }
+    .sw-cat { width: 91px; flex: none; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    /* Placeholder: flat neutral circle until real category art is provided. */
+    .sw-cat__circle { width: 64px; height: 64px; border-radius: 50%; background: var(--background-color-secondary); }
+    .sw-cat__label { font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; }
+    .sw-chips { display: flex; gap: 12px; padding: 16px 16px 8px; overflow: hidden; }
+    .sw-chip {
+      display: flex; align-items: center; flex: none; min-height: 32px; padding: 0 8px;
+      background: var(--background-color-secondary); border-radius: 896px;
+      font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap;
+    }
+    .sw-chip span { padding: 0 4px; }
+    .sw-chip img { width: 24px; height: 24px; }
+    .sw-feed { display: flex; flex-direction: column; gap: 32px; padding: 24px 16px 16px; }
+
+    .store-tile { display: flex; flex-direction: column; gap: 8px; }
+    .store-tile__image {
+      position: relative; height: 160px; border: 1px solid rgba(22, 23, 23, 0.05);
+      border-radius: 16px; overflow: hidden; background: #fff;
+    }
+    .store-tile__image > img.store-tile__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .store-tile__content {
+      position: absolute; inset: 0; padding: 8px; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .store-tile__top { display: flex; }
+    /* Placeholder logo tile (Figma uses each store's real logo). */
+    .store-tile__logo {
+      width: 64px; height: 64px; border-radius: 12px; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; line-height: 24px; font-weight: 700;
+    }
+    .store-tile__ai { position: absolute; right: 7px; bottom: 7px; width: 16px; height: 16px; }
+    .store-tile__desc { display: flex; flex-direction: column; gap: 4px; }
+    .store-tile__name-row { display: flex; align-items: flex-start; gap: 12px; }
+    .store-tile__name { flex: 1; min-width: 0; display: flex; align-items: center; gap: 4px; }
+    .store-tile__name p { margin: 0; font-size: 16px; line-height: 20px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .store-tile__name .toprated { position: relative; width: 20px; height: 20px; flex: none; display: flex; align-items: center; justify-content: center; }
+    .store-tile__fav { width: 20px; height: 20px; flex: none; display: flex; align-items: center; justify-content: center; }
+    .store-tile__fav img { width: 24px; height: 24px; flex: none; }
+    .store-tile__status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .st-rating { display: flex; align-items: center; gap: 4px; overflow: hidden; }
+    .st-rating b { font-size: 12px; line-height: 16px; font-weight: 500; width: 27px; }
+    .st-rating span { font-size: 12px; line-height: 16px; color: var(--text-color-secondary); }
+    .st-dot { font-size: 12px; line-height: 16px; }
+    .st-time, .st-fee { display: flex; align-items: center; gap: 4px; }
+    .st-time span:last-child, .st-fee span:last-child { font-size: 14px; line-height: 20px; }
+    .st-fee { min-height: 20px; }
+    .st-fee img { width: 16px; height: 16px; }
+    .st-social { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; }
+    .st-avatars { display: flex; align-items: center; width: 64px; height: 24px; }
+    .st-avatar {
+      width: 24px; height: 24px; border-radius: 50%; margin-left: -4px; border: 1px solid #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 16px; font-weight: 500;
+    }
+    .st-avatar:first-child { margin-left: 0; }
+    .st-social > span { font-size: 12px; line-height: 16px; }
+
+    .feat-banner {
+      position: relative; display: flex; align-items: center; height: 128px; overflow: hidden;
+      background: #fff; border: 1px solid rgba(22, 23, 23, 0.05); border-radius: 12px;
+    }
+    .feat-banner__content { flex: 1; min-width: 152px; height: 128px; padding: 8px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .feat-banner__title { margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; }
+    .feat-banner__desc { margin: 4px 0 0; font-size: 12px; line-height: 16px; }
+    .feat-banner__info { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; }
+    .feat-banner__info img { width: 16px; height: 16px; }
+    .feat-banner__media {
+      width: 140px; height: 128px; flex: none; position: relative; overflow: hidden;
+      -webkit-mask-image: url(assets/icons/banner-mask.svg); mask-image: url(assets/icons/banner-mask.svg);
+      -webkit-mask-size: 400px 400px; mask-size: 400px 400px;
+      -webkit-mask-position: 0 -120px; mask-position: 0 -120px;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    }
+    .feat-banner__media img { width: 100%; height: 100%; object-fit: cover; }
+    .feat-banner__go {
+      position: absolute; right: 7px; bottom: 7px; width: 24px; height: 24px; border-radius: 896px;
+      background: #fff; border: 1px solid var(--border-color-primary); display: flex; align-items: center; justify-content: center;
+    }
+    .feat-banner__go img { width: 16px; height: 16px; }
+    .feat-banner__ai { position: absolute; right: 8px; top: 8px; width: 16px; height: 16px; }
+
+    .ai-banner { position: relative; height: 128px; border-radius: 12px; overflow: hidden; background: #fff; }
+    .ai-banner > img { width: 100%; height: 100%; object-fit: cover; }
+    .ai-banner .tag { position: absolute; right: 8px; bottom: 8px; }
+
+    .tabbar { display: flex; flex: none; padding-bottom: 16px; background: #fff; border-top: 1px solid var(--background-color-secondary); }
+    .tabbar__tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; font-size: 12px; line-height: 16px; font-weight: 500; color: #838486; }
+    .tabbar__tab.is-active { color: var(--text-color-primary); }
+    .tabbar__icon { position: relative; width: 24px; height: 24px; }
+    .tabbar__icon img { position: absolute; left: 0; top: 0; width: 24px; height: 24px; }
+    .tabbar__icon img.tabbar__blob { left: -4px; top: -4px; width: 32px; height: 32px; }
+
+    /* =====================================================================
+       STORE VIEW (Figma 141:29225)
+       ===================================================================== */
+    /* Nav status bar (Store view + Product view) is 62px (22 + 21 + 19), unlike
+       the 54px Store wall one. Nav total = 62 + 56 = 118px. */
+    .sb--nav { height: 62px; padding: 21px 24px 19px; gap: 154px; }
+    .sb--nav .sb__spacer { display: none; }
+    .sb--nav .sb__time { flex: 1; height: 22px; padding-top: 1.5px; }
+    .sb--nav .sb__levels { flex: 1; padding: 1px 1px 0 0; }
+    .screen { --sv-nav-h: 118px; }
+
+    /* Fixed nav (status bar + buttons) floating over the hero. */
+    .sv-nav {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 6;
+      display: flex; flex-direction: column; color: #fff;
+      background: rgba(255, 255, 255, 0); transition: background-color 0.15s ease;
+    }
+    .sv-nav .sb__levels--dark, .sv-nav .sb__time--dark { display: none; }
+    .sv-nav.is-scrolled { background: #fff; color: var(--text-color-primary); }
+    .sv-nav.is-scrolled .sb__levels--light { display: none; }
+    .sv-nav.is-scrolled .sb__levels--dark { display: flex; }
+    .sv-nav__row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 16px 16px; }
+    .sv-nav__trailing { display: flex; align-items: center; gap: 8px; }
+
+    .sv-hero { position: relative; height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; color: #fff; }
+    .sv-hero__bg { position: absolute; inset: 0 0 -20px 0; width: 100%; height: calc(100% + 20px); object-fit: cover; }
+    .sv-hero__top {
+      position: absolute; left: 0; top: 0; width: 100%; height: 60px;
+      background: linear-gradient(to bottom, rgba(22, 22, 23, 0.86), rgba(22, 23, 23, 0.6) 50%, rgba(22, 23, 23, 0));
+    }
+    .sv-hero__info {
+      position: relative; display: flex; flex-direction: column; gap: 4px; padding: 32px 16px 24px;
+      background: linear-gradient(to bottom, rgba(22, 23, 23, 0), rgba(22, 23, 23, 0.6) 50%, rgba(22, 22, 23, 0.86));
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    }
+    .sv-title-row { display: flex; align-items: center; gap: 4px; }
+    .sv-title-row__main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; }
+    /* Placeholder logo (Figma uses the store's real logo; not downloadable). */
+    .sv-logo {
+      width: 64px; height: 64px; flex: none; border-radius: 12px; background: #161617; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 21px; line-height: 24px; font-weight: 700;
+    }
+    .sv-title-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .sv-title-text h1 { margin: 0; color: #fff; }
+    .sv-traits { display: flex; align-items: center; gap: 4px; height: 24px; font-size: 14px; line-height: 20px; white-space: nowrap; }
+    .sv-traits b { font-weight: 500; margin-left: 4px; }
+    .sv-traits .sv-dot { font-size: 12px; line-height: 16px; }
+    .sv-title-row__chev { padding-right: 8px; display: flex; }
+    .sv-title-row__chev img { width: 32px; height: 32px; }
+    .sv-ailabel { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; font-weight: 500; }
+    .sv-ailabel img { width: 16px; height: 16px; }
+    .sv-hero__curve { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; }
+
+    .sv-logistics {
+      position: relative; margin-top: -20px; display: flex; flex-direction: column; align-items: center; gap: 20px; padding-bottom: 20px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 20px, #fff 20px);
+    }
+    .sv-seg {
+      width: 192px; min-height: 40px; display: flex; align-items: center; gap: 4px; padding: 4px;
+      background: var(--background-color-secondary); border-radius: 896px;
+      box-shadow: 0 0 1px rgba(22, 23, 23, 0.05), 0 0 4px rgba(22, 23, 23, 0.21);
+    }
+    .sv-seg__item {
+      flex: 1; min-height: 32px; min-width: 80px; padding: 2px 12px; display: flex; align-items: center; justify-content: center;
+      border-radius: 896px; font-size: 14px; line-height: 20px; color: var(--text-color-primary);
+    }
+    .sv-seg__item.is-selected { background: #fff; color: #000; font-weight: 500; }
+    .sv-info { width: 100%; display: flex; gap: 8px; padding: 0 8px; }
+    .sv-info__col { flex: 1; min-width: 0; height: 40px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .sv-info__blob { position: relative; width: 32px; height: 32px; flex: none; }
+    .sv-info__blob img { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .sv-info__text { display: flex; flex-direction: column; justify-content: center; }
+    .sv-info__title { padding: 2px 0; font-size: 14px; line-height: 20px; white-space: nowrap; }
+    .sv-info__sub { display: flex; align-items: flex-end; gap: 2px; height: 16px; padding-top: 2px; font-size: 12px; line-height: 16px; color: var(--text-color-secondary); white-space: nowrap; }
+    .sv-info__sub img { width: 16px; height: 16px; }
+
+    /* Sticky tab menu: sits under the fixed nav once the hero has scrolled away. */
+    .sv-tabs {
+      position: sticky; top: var(--sv-nav-h); z-index: 5; display: flex; align-items: flex-end;
+      height: 56px; background: #fff; overflow: hidden;
+    }
+    .sv-tab { flex: none; height: 56px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 14px; line-height: 20px; white-space: nowrap; }
+    .sv-tab span { flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; }
+    .sv-tab::after { content: ""; display: block; height: 4px; background: #cdced0; }
+    .sv-tab.is-selected { font-weight: 700; }
+    .sv-tab.is-selected::after { background: #161617; border-radius: 896px; }
+    .sv-tabs__extender { flex: 1 0 1px; height: 4px; background: #cdced0; }
+
+    .sv-menu { display: flex; flex-direction: column; gap: 32px; padding: 32px 0; }
+    .sv-section { display: flex; flex-direction: column; }
+    .sv-section-header { display: flex; align-items: center; gap: 12px; padding: 0 16px; }
+    .sv-section-header__title { flex: 1; min-width: 0; padding: 4px 0; margin: 0; }
+    .sv-section-header__btn {
+      width: 32px; height: 32px; border-radius: 896px; background: var(--background-color-secondary);
+      display: flex; align-items: center; justify-content: center; flex: none;
+    }
+    .sv-section-header__btn img { width: 16px; height: 16px; }
+    .sv-section-header__spacer { width: 32px; flex: none; }
+
+    .add-btn {
+      width: 32px; height: 32px; flex: none; border-radius: 896px; background: #fff; border: 1px solid #cdced0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .add-btn img { width: 16px; height: 16px; }
+
+    .sv-carousel { display: flex; gap: 12px; padding: 16px 16px 0; overflow-x: auto; scrollbar-width: none; }
+    .sv-carousel::-webkit-scrollbar { display: none; }
+    .item-tile { width: 160px; flex: none; display: flex; flex-direction: column; gap: 8px; }
+    .item-tile__image { position: relative; height: 160px; border-radius: 16px; overflow: hidden; }
+    .item-tile__image > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .item-tile__overlay { position: absolute; inset: 0; background: rgba(22, 23, 23, 0.05); }
+    .item-tile__content { position: absolute; inset: 0; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-tile__add { display: flex; justify-content: flex-end; }
+    .item-tile__info { display: flex; flex-direction: column; gap: 2px; }
+    .item-tile__name { margin: 0; font-size: 16px; line-height: 20px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .item-tile__price { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .item-tile__price span:first-child { font-size: 14px; line-height: 20px; }
+    .item-tile__price s { font-size: 12px; line-height: 16px; color: var(--text-color-secondary); }
+
+    .sv-rows { display: flex; flex-direction: column; gap: 16px; padding: 16px 16px 0; }
+    .item-row { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 16px 0; }
+    .item-row::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #f2f2f3; }
+    .item-row__body { display: flex; gap: 16px; align-items: flex-start; }
+    .item-row__image { position: relative; width: 112px; height: 112px; flex: none; border-radius: 16px; overflow: hidden; background: #fff; }
+    .item-row__image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .item-row__image::after { content: ""; position: absolute; inset: 0; background: rgba(22, 23, 23, 0.05); }
+    .item-row__desc { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+    .item-row__head { display: flex; gap: 8px; align-items: flex-start; }
+    .item-row__name { flex: 1; min-width: 0; margin: 0; font-size: 16px; line-height: 20px; font-weight: 400; }
+    .item-row__price { width: 90px; flex: none; text-align: right; font-size: 14px; line-height: 20px; }
+    .item-row__text { margin: 0; font-size: 14px; line-height: 20px; }
+    /* Figma ends the description with a zero-width-space paragraph (one blank line). */
+    .item-row__text::after { content: "\200b"; display: block; }
+    .item-row__tags { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    .item-row__footer { display: flex; justify-content: flex-end; }
+
+    .sv-notice {
+      display: flex; align-items: center; gap: 12px; margin: 0 16px; padding: 12px;
+      background: var(--background-color-secondary); border-radius: 8px; font-size: 14px; line-height: 20px;
+    }
+    .sv-notice img { width: 16px; height: 16px; flex: none; }
+    .sv-notice p { margin: 0; flex: 1; }
+
+    /* =====================================================================
+       PRODUCT VIEW (Figma 141:37235)
+       ===================================================================== */
+    .pv-nav { position: absolute; top: 0; left: 0; right: 0; z-index: 6; color: #000; }
+    .pv-nav__row { display: flex; align-items: center; gap: 16px; padding: 0 16px 16px; }
+    .pv-image { position: relative; height: 472px; overflow: hidden; }
+    .pv-image > img.pv-image__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pv-image__curve { position: absolute; left: 0; bottom: 0; width: 100%; height: 8px; }
+    .pv-image .tag { position: absolute; top: 62px; right: 16px; z-index: 2; }
+
+    .pv-info { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px 24px; }
+    .pv-main { display: flex; flex-direction: column; gap: 8px; }
+    .pv-name-price { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .pv-name-price .tag { align-self: flex-start; }
+    .pv-name { margin: 0; }
+    .pv-price { margin: 0; display: flex; align-items: baseline; gap: 6px; }
+    .pv-price__now { font-size: 21px; line-height: 24px; font-weight: 700; color: var(--text-color-primary); }
+    .pv-price__was { font-size: 16px; line-height: 20px; font-weight: 400; color: var(--text-color-disabled); text-decoration: line-through; }
+    .pv-details { display: flex; flex-direction: column; gap: 16px; }
+    .pv-desc { margin: 0; color: var(--text-color-secondary); }
+    .pv-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 20px; }
+    .pv-tags .tag { background: var(--background-color-secondary); color: var(--text-color-primary); }
+    .pv-counter-wrap { display: flex; justify-content: center; }
+    .counter {
+      width: 120px; height: 48px; display: flex; align-items: center; justify-content: space-between;
+      background: var(--background-color-secondary); border-radius: 896px;
+    }
+    .counter__btn { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+    .counter__btn img { width: 24px; height: 24px; }
+    .counter__value { font-size: 16px; line-height: 20px; font-weight: 700; }
+    .pv-info .sv-notice { margin: 0; }
+
+    .pv-footer { flex: none; display: flex; gap: 12px; padding: 12px 16px 32px; background: #fff; }
+    .pv-footer__btn {
+      flex: 1; min-height: 40px; min-width: 48px; padding: 8px; border: 1px solid rgba(22, 23, 23, 0);
+      border-radius: 896px; background: var(--component-button-background-color-primary-enabled); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; font-weight: 700; white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Wrap all prototype content in .prototype-viewport.
+    Remove this wrapper (or change max-width) for tablet/desktop frames.
+  -->
+  <div class="prototype-viewport">
+
+    <!-- Screen 1: Store wall (Figma 141:29412) -->
+    <section class="screen is-active" id="screen-store-wall" data-screen="store-wall" aria-label="Store wall">
+      <div class="screen__scroll">
+
+        <header class="sw-header">
+          <div class="sb">
+            <div class="sb__time">9:41</div>
+            <div class="sb__spacer"></div>
+            <div class="sb__levels">
+              <img src="assets/icons/sb-cell-dark.svg" alt="" />
+              <img src="assets/icons/sb-wifi-dark.svg" alt="" />
+              <img src="assets/icons/sb-battery-dark.svg" alt="" />
+            </div>
+          </div>
+
+          <div class="sw-nav">
+            <div class="sw-nav__row">
+              <button class="icon-btn icon-btn--neutral inert" type="button" aria-label="Back"><img src="assets/icons/nav-back-gray.svg" alt="" /></button>
+              <div class="sw-nav__body">
+                <button class="sw-address inert" type="button"><span>Address</span><img src="assets/icons/chevron-down-24.svg" alt="" /></button>
+              </div>
+              <div class="sw-nav__spacer"></div>
+            </div>
+            <h1 class="sw-nav__title pintxo-typography-title1">Food</h1>
+          </div>
+
+          <div class="sw-search">
+            <div class="sw-search__input inert"><img src="assets/icons/search-24.svg" alt="" /><span>Search</span></div>
+          </div>
+
+          <div class="sw-cats" aria-hidden="true">
+            <div class="sw-cat"><div class="sw-cat__circle"></div><span class="sw-cat__label">Promotions</span></div>
+            <div class="sw-cat"><div class="sw-cat__circle"></div><span class="sw-cat__label">Vegetarian</span></div>
+            <div class="sw-cat"><div class="sw-cat__circle"></div><span class="sw-cat__label">Mediterranean</span></div>
+            <div class="sw-cat"><div class="sw-cat__circle"></div><span class="sw-cat__label">Mexican</span></div>
+            <div class="sw-cat"><div class="sw-cat__circle"></div><span class="sw-cat__label">Asian</span></div>
+          </div>
+
+          <div class="sw-chips">
+            <div class="sw-chip"><span>Promotions</span></div>
+            <div class="sw-chip"><span>Food type</span><img src="assets/icons/selector-chevron.svg" alt="" /></div>
+            <div class="sw-chip"><img src="assets/icons/person-walking.svg" alt="" /><span>Pickup</span></div>
+            <div class="sw-chip"><span>InStore prices</span></div>
+          </div>
+        </header>
+
+        <main class="sw-feed">
+
+          <!-- Honest Greens: the only tile that navigates (to Store view) -->
+          <article class="store-tile" data-nav="store-view" role="link" tabindex="0" aria-label="Honest Greens">
+            <div class="store-tile__image">
+              <img class="store-tile__photo" src="assets/img/honest-greens.png" alt="" />
+              <div class="store-tile__content">
+                <div class="store-tile__top"></div>
+                <div class="store-tile__logo" style="background:#161617;">HG</div>
+              </div>
+              <img class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+            </div>
+            <div class="store-tile__desc">
+              <div class="store-tile__name-row">
+                <div class="store-tile__name"><p>Honest Greens</p></div>
+                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+              </div>
+              <div class="store-tile__status">
+                <div class="st-rating">
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <b>98%</b><span>(413)</span>
+                </div>
+                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
+                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="store-tile inert">
+            <div class="store-tile__image">
+              <img class="store-tile__photo" src="assets/img/burger-king.jpg" alt="" />
+              <div class="store-tile__content">
+                <div class="store-tile__top"><span class="tag tag--promo">2x1 in some products</span></div>
+                <div class="store-tile__logo" style="background:#d62300;">BK</div>
+              </div>
+            </div>
+            <div class="store-tile__desc">
+              <div class="store-tile__name-row">
+                <div class="store-tile__name">
+                  <span class="toprated"><span class="blob16"><img src="assets/icons/blob-top-rated.svg" alt="" /><img src="assets/icons/crown.svg" alt="" /></span></span>
+                  <p>Burger King</p>
+                </div>
+                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+              </div>
+              <div class="store-tile__status">
+                <div class="st-rating">
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <b>98%</b><span>(413)</span>
+                </div>
+                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
+                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="feat-banner inert">
+            <div class="feat-banner__content">
+              <div>
+                <p class="feat-banner__title">Enjoy the new fall Menu at Domino’s Pizza!</p>
+                <p class="feat-banner__desc">Featuring seasonal flavors!</p>
+              </div>
+              <div class="feat-banner__info"><span>Info</span><img src="assets/icons/info-circle-16.svg" alt="" /></div>
+            </div>
+            <div class="feat-banner__media"><img src="assets/img/dominos.png" alt="" /></div>
+            <div class="feat-banner__go"><img src="assets/icons/arrow-forward-16.svg" alt="" /></div>
+            <img class="feat-banner__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+          </div>
+
+          <article class="store-tile inert">
+            <div class="store-tile__image">
+              <img class="store-tile__photo" src="assets/img/baby-jalebi.png" alt="" />
+              <div class="store-tile__content">
+                <div class="store-tile__top"></div>
+                <div class="store-tile__logo" style="background:#f26a1b;">BJ</div>
+              </div>
+            </div>
+            <div class="store-tile__desc">
+              <div class="store-tile__name-row">
+                <div class="store-tile__name"><p>Baby Jalebi</p></div>
+                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+              </div>
+              <div class="store-tile__status">
+                <div class="st-rating">
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <b>95%</b><span>(413)</span>
+                </div>
+                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
+                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="store-tile inert">
+            <div class="store-tile__image">
+              <img class="store-tile__photo" src="assets/img/youme-sushi.png" alt="" />
+              <div class="store-tile__content">
+                <div class="store-tile__top"><span class="tag tag--promo">2x1 in some products</span></div>
+                <div class="store-tile__logo" style="background:#161617;">YS</div>
+              </div>
+            </div>
+            <div class="store-tile__desc">
+              <div class="store-tile__name-row">
+                <div class="store-tile__name"><p>Youme Sushi</p></div>
+                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+              </div>
+              <div class="store-tile__status">
+                <div class="st-rating">
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <b>98%</b><span>(413)</span>
+                </div>
+                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
+                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
+              </div>
+              <div class="st-social">
+                <div class="st-avatars">
+                  <span class="st-avatar" style="background:#d3e7f3;color:#1372aa;">A</span>
+                  <span class="st-avatar" style="background:#e6e5f6;color:#594ddb;">B</span>
+                  <span class="st-avatar" style="background:#f9ebeb;color:#d41616;">C</span>
+                </div>
+                <span>Ordered by 4 friends</span>
+              </div>
+            </div>
+          </article>
+
+          <div class="ai-banner inert">
+            <img src="assets/img/lunch-banner.jpg" alt="" />
+            <span class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" />Enhanced</span>
+          </div>
+
+          <article class="store-tile inert">
+            <div class="store-tile__image">
+              <img class="store-tile__photo" src="assets/img/healthy-poke.jpg" alt="" />
+              <div class="store-tile__content">
+                <div class="store-tile__top"></div>
+                <div class="store-tile__logo" style="background:#1d3f8f;">HP</div>
+              </div>
+            </div>
+            <div class="store-tile__desc">
+              <div class="store-tile__name-row">
+                <div class="store-tile__name">
+                  <span class="toprated"><span class="blob16"><img src="assets/icons/blob-top-rated.svg" alt="" /><img src="assets/icons/crown.svg" alt="" /></span></span>
+                  <p>Healthy Poke</p>
+                </div>
+                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+              </div>
+              <div class="store-tile__status">
+                <div class="st-rating">
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <b>98%</b><span>(413)</span>
+                </div>
+                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
+                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
+              </div>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <nav class="tabbar" aria-label="Main">
+        <div class="tabbar__tab is-active inert">
+          <span class="tabbar__icon"><img class="tabbar__blob" src="assets/icons/blob-tab.svg" alt="" /><img src="assets/icons/tab-house.svg" alt="" /></span>Home
+        </div>
+        <div class="tabbar__tab inert"><span class="tabbar__icon"><img src="assets/icons/tab-search.svg" alt="" /></span>Search</div>
+        <div class="tabbar__tab inert"><span class="tabbar__icon"><img src="assets/icons/tab-cart.svg" alt="" /></span>Cart</div>
+        <div class="tabbar__tab inert"><span class="tabbar__icon"><img src="assets/icons/tab-person.svg" alt="" /></span>Profile</div>
+      </nav>
+    </section>
+
+    <!-- Screen 2: Store view (Figma 141:29225) -->
+    <section class="screen" id="screen-store-view" data-screen="store-view" aria-label="Store view">
+
+      <!-- Fixed nav: floats over the hero, turns white once the page scrolls -->
+      <div class="sv-nav" id="sv-nav">
+        <div class="sb sb--nav">
+          <div class="sb__time">9:41</div>
+          <div class="sb__spacer"></div>
+          <div class="sb__levels sb__levels--light">
+            <img src="assets/icons/sb-cell-light.svg" alt="" />
+            <img src="assets/icons/sb-wifi-light.svg" alt="" />
+            <img src="assets/icons/sb-battery-light.svg" alt="" />
+          </div>
+          <div class="sb__levels sb__levels--dark">
+            <img src="assets/icons/sb-cell-dark.svg" alt="" />
+            <img src="assets/icons/sb-wifi-dark.svg" alt="" />
+            <img src="assets/icons/sb-battery-dark.svg" alt="" />
+          </div>
+        </div>
+        <div class="sv-nav__row">
+          <button class="icon-btn icon-btn--floating" type="button" data-back aria-label="Back"><img src="assets/icons/nav-back.svg" alt="" /></button>
+          <div class="sv-nav__trailing">
+            <button class="icon-btn icon-btn--floating inert" type="button" aria-label="Search"><img src="assets/icons/nav-search.svg" alt="" /></button>
+            <button class="icon-btn icon-btn--neutral inert" type="button" aria-label="Translate"><img src="assets/icons/nav-translate.svg" alt="" /></button>
+            <button class="icon-btn icon-btn--floating inert" type="button" aria-label="More"><img src="assets/icons/nav-more.svg" alt="" /></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen__scroll" id="sv-scroll">
+
+        <div class="sv-hero">
+          <img class="sv-hero__bg" src="assets/img/store-header-bg.png" alt="" />
+          <div class="sv-hero__top"></div>
+          <div class="sv-hero__info">
+            <div class="sv-title-row">
+              <div class="sv-title-row__main">
+                <div class="sv-logo">HG</div>
+                <div class="sv-title-text">
+                  <h1 class="pintxo-typography-title1">Honest Greens</h1>
+                  <div class="sv-traits">
+                    <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                    <b>95%</b><span>(413)</span><span class="sv-dot">•</span><span>32 Reviews</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sv-title-row__chev"><img src="assets/icons/chevron-forward-32.svg" alt="" /></div>
+            </div>
+            <div class="sv-ailabel"><img src="assets/icons/ai-sparkle-light.svg" alt="" /><span>Enhanced</span></div>
+          </div>
+          <img class="sv-hero__curve" src="assets/icons/curve.svg" alt="" />
+        </div>
+
+        <div class="sv-logistics">
+          <div class="sv-seg inert">
+            <div class="sv-seg__item is-selected">Delivery</div>
+            <div class="sv-seg__item">Pickup</div>
+          </div>
+          <div class="sv-info">
+            <div class="sv-info__col">
+              <span class="sv-info__blob"><img src="assets/icons/blob-logistics.svg" alt="" /><img src="assets/icons/clock-32.svg" alt="" /></span>
+              <div class="sv-info__text">
+                <div class="sv-info__title">20-35min</div>
+                <div class="sv-info__sub">Delivery time</div>
+              </div>
+            </div>
+            <div class="sv-info__col">
+              <span class="sv-info__blob"><img src="assets/icons/blob-logistics.svg" alt="" /><img src="assets/icons/bike-32.svg" alt="" /></span>
+              <div class="sv-info__text">
+                <div class="sv-info__title">2,49€</div>
+                <div class="sv-info__sub">Fees info <img src="assets/icons/info-circle-store.svg" alt="" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab menu: sticks below the fixed nav while the menu scrolls -->
+        <div class="sv-tabs inert" id="sv-tabs">
+          <div class="sv-tab is-selected"><span>Order again</span></div>
+          <div class="sv-tab"><span>Honest Plates</span></div>
+          <div class="sv-tab"><span>Desserts</span></div>
+          <div class="sv-tab"><span>Drinks</span></div>
+          <div class="sv-tab"><span>Extra sauce</span></div>
+          <div class="sv-tab"><span>Desserts</span></div>
+          <div class="sv-tab"><span>Drinks</span></div>
+          <div class="sv-tab"><span>Similar stores</span></div>
+          <div class="sv-tabs__extender"></div>
+        </div>
+
+        <div class="sv-menu">
+
+          <!-- Order again -->
+          <section class="sv-section">
+            <div class="sv-section-header"><h2 class="sv-section-header__title pintxo-typography-title3">Order again</h2></div>
+            <div class="sv-carousel">
+
+              <article class="item-tile" data-nav="product-view" role="link" tabindex="0" aria-label="Avocado supergreen">
+                <div class="item-tile__image">
+                  <img src="assets/img/avocado-supergreen.png" alt="" />
+                  <div class="item-tile__overlay"></div>
+                  <div class="item-tile__content">
+                    <div><span class="tag tag--promo">-20%</span></div>
+                    <div class="item-tile__add"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+                  </div>
+                </div>
+                <div class="item-tile__info">
+                  <p class="item-tile__name">Avocado supergreen</p>
+                  <div class="item-tile__price"><span>9,90€</span><s>12,38€</s></div>
+                </div>
+              </article>
+
+              <article class="item-tile inert">
+                <div class="item-tile__image">
+                  <img src="assets/img/honest-salmon.png" alt="" />
+                  <div class="item-tile__overlay"></div>
+                  <div class="item-tile__content">
+                    <div></div>
+                    <div class="item-tile__add"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+                  </div>
+                </div>
+                <div class="item-tile__info">
+                  <p class="item-tile__name">Honest salmon</p>
+                  <div class="item-tile__price"><span>8,90€</span></div>
+                </div>
+              </article>
+
+              <article class="item-tile inert">
+                <div class="item-tile__image">
+                  <img src="assets/img/ternera.png" alt="" />
+                  <div class="item-tile__overlay"></div>
+                  <div class="item-tile__content">
+                    <div><span class="tag tag--promo">-20%</span></div>
+                    <div class="item-tile__add"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+                  </div>
+                </div>
+                <div class="item-tile__info">
+                  <p class="item-tile__name">Ternera Chimichurri</p>
+                  <div class="item-tile__price"><span>3,90€</span><s>4,87€</s></div>
+                </div>
+              </article>
+
+              <article class="item-tile inert">
+                <div class="item-tile__image">
+                  <img src="assets/img/tres-leches.png" alt="" />
+                  <div class="item-tile__overlay"></div>
+                  <div class="item-tile__content">
+                    <div></div>
+                    <div class="item-tile__add"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+                  </div>
+                </div>
+                <div class="item-tile__info">
+                  <p class="item-tile__name">Tres leches</p>
+                  <div class="item-tile__price"><span>6,50€</span></div>
+                </div>
+              </article>
+
+            </div>
+          </section>
+
+          <!-- Top sellers -->
+          <section class="sv-section">
+            <div class="sv-section-header">
+              <h2 class="sv-section-header__title pintxo-typography-title3">Top sellers</h2>
+              <span class="sv-section-header__btn"><img src="assets/icons/arrow-forward-neutral.svg" alt="" /></span>
+            </div>
+            <div class="sv-rows">
+
+              <article class="item-row inert">
+                <div class="item-row__body">
+                  <div class="item-row__image"><img src="assets/img/honest-salmon.png" alt="" /></div>
+                  <div class="item-row__desc">
+                    <div class="item-row__head"><p class="item-row__name">Honest salmon</p><span class="item-row__price">15,90 €</span></div>
+                    <p class="item-row__text">One of the most popular items in our restaurants - why is that? long seeded bread containing crispy, lightly breaded, lighlty spiced chicken, lettuce and mayonnaise, a classic!</p>
+                    <div class="item-row__tags"><span class="tag tag--neutral">Gluten free</span><span class="tag tag--neutral">Lactose free</span></div>
+                  </div>
+                </div>
+                <div class="item-row__footer"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+              </article>
+
+              <article class="item-row" data-nav="product-view" role="link" tabindex="0" aria-label="Avocado supergreen">
+                <div class="item-row__body">
+                  <div class="item-row__image"><img src="assets/img/avocado-supergreen.png" alt="" /></div>
+                  <div class="item-row__desc">
+                    <div class="item-row__head"><p class="item-row__name">Avocado supergreen</p><span class="item-row__price">15,90 €</span></div>
+                    <p class="item-row__text">Nuevos Chili Cheese Bites con salsa cheddar y jalapeños.</p>
+                    <div class="item-row__tags"><span class="tag tag--neutral">Gluten free</span><span class="tag tag--neutral">Vegetarian</span><span class="tag tag--neutral">+2</span></div>
+                  </div>
+                </div>
+                <div class="item-row__footer"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+              </article>
+
+              <article class="item-row inert">
+                <div class="item-row__body">
+                  <div class="item-row__image"><img src="assets/img/ternera.png" alt="" /></div>
+                  <div class="item-row__desc">
+                    <div class="item-row__head"><p class="item-row__name">Ternera Chimichurri</p><span class="item-row__price">15,90 €</span></div>
+                    <p class="item-row__text">One of the most popular items in our restaurants - why is that? long seeded bread containing crispy, lightly breaded, lighlty spiced chicken, lettuce and mayonnaise, a classic!</p>
+                    <div class="item-row__tags"><span class="tag tag--neutral">Gluten free</span><span class="tag tag--neutral">Lactose free</span><span class="tag tag--neutral">+2</span></div>
+                  </div>
+                </div>
+                <div class="item-row__footer"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+              </article>
+
+            </div>
+          </section>
+
+          <!-- Honest plates (same items as Top sellers in Figma) -->
+          <section class="sv-section">
+            <div class="sv-section-header">
+              <h2 class="sv-section-header__title pintxo-typography-title3">Honest plates</h2>
+              <span class="sv-section-header__btn"><img src="assets/icons/arrow-forward-neutral.svg" alt="" /></span>
+            </div>
+            <div class="sv-rows">
+
+              <article class="item-row inert">
+                <div class="item-row__body">
+                  <div class="item-row__image"><img src="assets/img/honest-salmon.png" alt="" /></div>
+                  <div class="item-row__desc">
+                    <div class="item-row__head"><p class="item-row__name">Honest salmon</p><span class="item-row__price">15,90 €</span></div>
+                    <p class="item-row__text">One of the most popular items in our restaurants - why is that? long seeded bread containing crispy, lightly breaded, lighlty spiced chicken, lettuce and mayonnaise, a classic!</p>
+                    <div class="item-row__tags"><span class="tag tag--neutral">Gluten free</span><span class="tag tag--neutral">Lactose free</span></div>
+                  </div>
+                </div>
+                <div class="item-row__footer"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+              </article>
+
+              <article class="item-row" data-nav="product-view" role="link" tabindex="0" aria-label="Avocado supergreen">
+                <div class="item-row__body">
+                  <div class="item-row__image"><img src="assets/img/avocado-supergreen.png" alt="" /></div>
+                  <div class="item-row__desc">
+                    <div class="item-row__head"><p class="item-row__name">Avocado supergreen</p><span class="item-row__price">15,90 €</span></div>
+                    <p class="item-row__text">Nuevos Chili Cheese Bites con salsa cheddar y jalapeños.</p>
+                    <div class="item-row__tags"><span class="tag tag--neutral">Gluten free</span><span class="tag tag--neutral">Vegetarian</span><span class="tag tag--neutral">+2</span></div>
+                  </div>
+                </div>
+                <div class="item-row__footer"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+              </article>
+
+              <article class="item-row inert">
+                <div class="item-row__body">
+                  <div class="item-row__image"><img src="assets/img/ternera.png" alt="" /></div>
+                  <div class="item-row__desc">
+                    <div class="item-row__head"><p class="item-row__name">Ternera Chimichurri</p><span class="item-row__price">15,90 €</span></div>
+                    <p class="item-row__text">One of the most popular items in our restaurants - why is that? long seeded bread containing crispy, lightly breaded, lighlty spiced chicken, lettuce and mayonnaise, a classic!</p>
+                    <div class="item-row__tags"><span class="tag tag--neutral">Gluten free</span><span class="tag tag--neutral">Lactose free</span><span class="tag tag--neutral">+2</span></div>
+                  </div>
+                </div>
+                <div class="item-row__footer"><span class="add-btn"><img src="assets/icons/plus-16.svg" alt="" /></span></div>
+              </article>
+
+            </div>
+          </section>
+
+          <div class="sv-notice">
+            <img src="assets/icons/ai-sparkle-banner.svg" alt="" />
+            <p>Some product images, descriptions, dietary tags and translations are generated by AI</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Product view (Figma 141:37235) -->
+    <section class="screen" id="screen-product-view" data-screen="product-view" aria-label="Product view">
+
+      <!-- Fixed nav over the product image -->
+      <div class="pv-nav">
+        <div class="sb sb--nav">
+          <div class="sb__time">9:41</div>
+          <div class="sb__spacer"></div>
+          <div class="sb__levels">
+            <img src="assets/icons/sb-cell-prod.svg" alt="" />
+            <img src="assets/icons/sb-wifi-prod.svg" alt="" />
+            <img src="assets/icons/sb-battery-prod.svg" alt="" />
+          </div>
+        </div>
+        <div class="pv-nav__row">
+          <button class="icon-btn icon-btn--floating" type="button" data-back aria-label="Back"><img src="assets/icons/nav-back.svg" alt="" /></button>
+        </div>
+      </div>
+
+      <div class="screen__scroll">
+
+        <div class="pv-image">
+          <img class="pv-image__photo" src="assets/img/avocado-supergreen.png" alt="Avocado supergreen" />
+          <span class="tag tag--neutral inert"><img src="assets/icons/ai-sparkle-dark.svg" alt="" />Enhanced</span>
+          <img class="pv-image__curve" src="assets/icons/curve-product.svg" alt="" />
+        </div>
+
+        <div class="pv-info">
+          <div class="pv-main">
+            <div class="pv-name-price">
+              <span class="tag tag--promo">-20%</span>
+              <h1 class="pv-name pintxo-typography-title1">Avocado supergreen</h1>
+              <p class="pv-price"><span class="pv-price__now">9,90€</span><span class="pv-price__was">12,38€</span></p>
+            </div>
+            <div class="pv-details">
+              <p class="pv-desc pintxo-typography-body2">Experience the vibrant taste of our Avocado Supergreen! This nutrient-packed delight combines creamy avocados with a blend of fresh greens, offering a refreshing and healthy option for any meal. Rich in vitamins and healthy fats, it's perfect for salads, smoothies, or as a spread. Enjoy the wholesome goodness and elevate your culinary creations!</p>
+              <div class="pv-tags">
+                <span class="tag">Gluten free</span><span class="tag">Vegetarian</span><span class="tag">Vegan</span>
+              </div>
+              <div class="pv-counter-wrap">
+                <div class="counter inert" role="group" aria-label="Quantity">
+                  <span class="counter__btn"><img src="assets/icons/minus-24.svg" alt="Decrease" /></span>
+                  <span class="counter__value">1</span>
+                  <span class="counter__btn"><img src="assets/icons/plus-24.svg" alt="Increase" /></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sv-notice">
+            <img src="assets/icons/ai-sparkle-banner.svg" alt="" />
+            <p>Product descriptions, dietary tags and translations are generated by AI</p>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="pv-footer">
+        <button class="pv-footer__btn inert" type="button">Add · 9,90€</button>
+      </footer>
+    </section>
+
+  </div>
+
+  <script>
+    /* Navigation: [data-nav="<screen>"] goes forward, [data-back] pops history.
+       Everything else in the prototype is intentionally inert. */
+    (function () {
+      var screens = {};
+      document.querySelectorAll('.screen').forEach(function (el) {
+        screens[el.dataset.screen] = el;
+      });
+      var history = ['store-wall'];
+
+      function show(name, resetScroll) {
+        Object.keys(screens).forEach(function (key) {
+          screens[key].classList.toggle('is-active', key === name);
+        });
+        var scroller = screens[name].querySelector('.screen__scroll');
+        if (scroller && resetScroll) { scroller.scrollTop = 0; }
+      }
+
+      /* Store view: the fixed nav floats transparent over the hero and turns
+         white once the hero has scrolled under it. */
+      var svScroll = document.getElementById('sv-scroll');
+      var svNav = document.getElementById('sv-nav');
+      var svHero = svScroll.querySelector('.sv-hero');
+      function updateNav() {
+        var threshold = svHero.offsetHeight - svNav.offsetHeight;
+        svNav.classList.toggle('is-scrolled', svScroll.scrollTop >= threshold);
+      }
+      svScroll.addEventListener('scroll', updateNav, { passive: true });
+
+      document.addEventListener('click', function (event) {
+        var forward = event.target.closest('[data-nav]');
+        if (forward && screens[forward.dataset.nav]) {
+          history.push(forward.dataset.nav);
+          show(forward.dataset.nav, true);
+          return;
+        }
+        if (event.target.closest('[data-back]') && history.length > 1) {
+          history.pop();
+          /* Keep the previous screen's scroll position when going back. */
+          show(history[history.length - 1], false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
