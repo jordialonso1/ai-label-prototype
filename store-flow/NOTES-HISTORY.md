@@ -2,6 +2,36 @@
 
 Chronological context for future sessions. `NOTES.md` holds the current rules and state. This file holds what happened, why, and what is still open. Newest session first.
 
+## 2026-10-14 (session 2: AI label review tooling)
+
+### What changed
+1. **Tab bar**: labels now Home, Discover, Orders, Profile (real app). Orders uses the uds-react `bags` icon (`assets/icons/tab-bags.svg`, foreground variant, 24px). `tab-cart.svg` is unused.
+2. **Wrapper page** (`src/App.tsx`, `src/app.css`): title "AI labels touchpoints" (also the tab title in `index.html`), no subtitle, title block and checkboxes in a left column, device frame centred. The page never scrolls: the device is scaled with `transform: scale` to fit the viewport (never up, minimum 0.3).
+3. **Highlight AI labels checkbox**: pulsing ring around every `[data-ai-label]` element, shape from Figma `196:75575`, recoloured to `--brand-color-secondary` (green) on request. The ring fades to 70% (not 35%) so it stays visible. While highlighting, `overflow: hidden` is lifted on the store tile, Domino's banner and lunch banner, and their images get their own radius.
+4. **AI label stepper** (shown only while highlight is on, jumps to label 1 when ticked): prev/next with counter, name and screen. The prototype switches screen, opens modals (Ad modal, Translations dropdown) and scrolls. 9 labels, names set by the user: Store tile icon, Ads featured banner icon, Ads featured banner label (Ad modal tag, placed via `data-ai-after`), Ads full width featured banner label, Header image icon, Footer banner for multiple generated content (Store view), Content translations, Image label, Footer banner for multiple generated content (Product view).
+5. **Reference image checkbox**: swaps the 3 "Enhanced" tags to "Reference" (`data-tag-text` spans).
+6. Messages between wrapper and prototype (all `postMessage`, same origin): `highlight-ai`, `reference-image`, `focus-ai-label`, `ai-labels-query` (wrapper to prototype) and `ai-labels` (prototype to wrapper).
+
+### Tooling lessons
+- Reading a screenshot straight after `sips` or Chrome often returns "File not found" (the file is still being written). Wait a second and read again.
+- To drive the wrapper in headless Chrome, write a throwaway `public/_t.html` that embeds `/` in an iframe, clicks the real checkboxes and prints state into a `<pre>`, then use `--dump-dom`. Delete it afterwards. `grep` on a Vite dev page counts injected CSS, so check element state, not text.
+- To capture a paused pulse frame, inject `animation-play-state: paused; animation-delay: <t>` for `[data-ai-label]`.
+- Prettier on `src/App.tsx` needs `--no-semi --single-quote` to match the project (the default rewrites the whole file).
+
+### Open items and unverified points
+- The pulse timing and growth (1.6s, +3px) are my choice, since Figma has no motion data. The animation itself was only checked as paused frames.
+- Highlight was visually checked on the Honest Greens tile, Domino's banner, Product view tag and notice. Not looked at on the Store view, lunch banner and modals. Stepper jumps were checked for 4, 7 and 9 only; the others by name and order.
+- Enhanced tag ring on the Product view sits close to the status bar.
+- "Reference" tag width was not checked in a screenshot.
+- Clicking through the prototype while the device is scaled down was not tested.
+- The deploy workflow uses Node 20 actions (deprecated) and `ubuntu-latest` moves to Ubuntu 26 on 2026-10-19. Not broken yet.
+- Older open items from the first session below still stand, except the tab bar labels (resolved).
+
+### State at end of session
+- Committed and pushed: `abc230f` on `main`, deployed to GitHub Pages (build and deploy green).
+- Working tree clean except a stray root `.DS_Store` (not committed on purpose).
+- A Vite dev server is running on port 5173 (started earlier, may be stale).
+
 ## 2026-10-14
 
 ### What changed (all in `public/prototype/index.html` unless noted)
@@ -40,7 +70,4 @@ Chronological context for future sessions. `NOTES.md` holds the current rules an
 - Slide-up and fade animations were verified by computed end state only, not by watching them.
 
 ### State at end of session
-- All changes above are **uncommitted and unpushed**. `main` deploys publicly on push, so only push when the user asks.
-- New untracked assets: `icons/` (`cross-24`, `map-24`, `modal-heart`, `modal-info`, `modal-share`, `modal-top`, `modal-translate`) and `img/` (`cat-*.svg`, `honest-greens-logo.png`). Modified: `tab-cart/person/search.svg`, `index.html`.
-- `npm run lint`, `typecheck` and `build` pass.
-- A Vite dev server was left running on port 5173 (log at `/tmp/store-flow-dev.log`). It may be stale or gone in the next session.
+- Committed and pushed in `97fb53c` (see the second session above for the follow-up work).
