@@ -1,6 +1,6 @@
 # Store flow prototype: working notes
 
-Read this first when starting a new session on the prototype.
+Read this first when starting a new session on the prototype. Session-by-session context (what changed, tooling lessons, open questions) lives in `NOTES-HISTORY.md`.
 
 ## What it is
 An HTML prototype of 3 screens: Store wall -> Store view -> Product view. It has vertical scrolling, click navigation and working back navigation. It is wrapped in a Vite + React + TS site that shows it in a 390x844 device frame.
@@ -35,15 +35,22 @@ An HTML prototype of 3 screens: Store wall -> Store view -> Product view. It has
 - Width is 390px (Pintxo), not Figma's 402px. Content reflows.
 - Follow Pintxo and Figma inside the prototype (light theme, Glovo Sans). The dark / JetBrains Mono rules in AGENTS.md do not apply here.
 - Typography: Figma / uds-react sizes override the Pintxo boilerplate (title1 28/32, title2 24/28, title3 21/24, callout1 16/20, callout2 14/20 bold, body 16/20 and 14/20, caption 12/16). They are applied in an override `<style>` block.
-- Only navigation is functional. Everything else is rendered but inert (class `inert`).
+- "Highlight AI labels" checkbox (wrapper `src/App.tsx`): posts `{ type: 'highlight-ai', value }` to the iframe, and the prototype toggles `html.highlight-ai`, which outlines every `[data-ai-label]` element in pink. When adding a new AI label (sparkle, Enhanced tag, AI notice), add `data-ai-label` to it. This only exists on the wrapper page, so the standalone `/prototype/index.html` has no control for it.
+- Only navigation and the modal sheets are functional. Everything else is rendered but inert (class `inert`).
+- Modal sheets: `.modal` overlay inside the screen it belongs to (Ad modalsheet on Store wall `#ad-modal`, Translations dropdown on Store view `#translations-modal`). Open with `data-modal-open="<id>"`, close with `[data-modal-close]` or Esc. Scrim fades and the sheet slides up (0.35s / 0.4s, respects `prefers-reduced-motion`). To add a sheet, copy the `.modal` markup and the CSS is reused.
+- Store wall header collapses on scroll (`#sw-sticky`, toggled in the nav JS once `#sw-search` scrolls under the status bar): translucent blur header with back, "Search in Food", map button and the chips. Behaviour taken from a real-app screenshot, not from Figma.
+- Store wall tab bar is a floating "liquid glass" pill (translucent, backdrop blur, inner highlights). Taken from the real-app screenshot. Glass values were estimated by eye. `.sw-feed` bottom padding (108px) clears it.
 - Navigation: Honest Greens tile (Store wall) -> Store view. All 3 "Avocado supergreen" instances in Store view (Order again tile, Top sellers row, Honest plates row) -> Product view. Back goes Product view -> Store view -> Store wall and keeps the previous screen's scroll position.
-- Fixed chrome: Store wall tab bar, Store view nav and sticky tab menu, Product view "Add" footer.
+- Fixed chrome: Store wall tab bar (floating glass) and collapsed header, Store view nav and sticky tab menu, Product view "Add" footer.
 - Store view nav is transparent over the hero and turns white once scrolled (`.is-scrolled`, wired in the nav JS). This is an addition, not in Figma.
+- Store view header: the AI sparkle is icon-only (no "Enhanced" text), right-aligned under the chevron.
+- Store view nav buttons: back, search, translate and more are all floating icon buttons (white, 1px border). Translate opens the Translations dropdown.
+- Store wall tiles have no logo/avatar overlay (removed in the latest Figma). The Youme Sushi "ordered by friends" avatars are still in Figma and kept.
 - Hidden Figma layers are not rendered (PrimePromoLoyalty, hidden tabs, hidden quantifier). The Store view snackbar is outside the frame, so it is left out.
 
 ## Known deltas against Figma (candidates for the next iterations)
-1. Store logos are flat-colour initials tiles with invented colours (logos were not downloadable).
-2. Category carousel on Store wall uses plain grey circles. The "Asian" label is invented.
+1. Store view avatar is a 130x130 crop of the real Honest Greens logo from a real-app screenshot (soft on retina). Figma exposes the avatar only as a Code Connect snippet. Replace with a proper export if available.
+2. Category carousel on Store wall uses uds-react illustrations copied to `assets/img/cat-*.svg` (backgrounds stripped). The fifth item "Asian" is a guess (Figma shows it cut off).
 3. Status bar time uses a system font stack (Figma uses SF Pro, not provided).
 4. Store view traits row shows only the rating (Figma rotates through 4 rows).
 5. Honest plates reuses the Top sellers rows (Figma uses the same items).
