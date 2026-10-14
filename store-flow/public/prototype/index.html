@@ -297,11 +297,50 @@
     .tag--neutral { background: var(--background-color-secondary); color: var(--text-color-primary); }
     .tag img { width: 16px; height: 16px; }
 
-    /* Review aid: the wrapper page toggles html.highlight-ai via postMessage. */
-    html.highlight-ai [data-ai-label] {
-      outline: 2px solid #ff1f9c; outline-offset: 2px; border-radius: 4px;
-      background-color: rgba(255, 31, 156, 0.16);
+    /* Review aid: the wrapper page toggles html.highlight-ai via postMessage.
+       Style from Figma 196:75575 (shape and sizes), recoloured with the UDS brand secondary
+       green (--brand-color-secondary) instead of Figma's magenta: a detached ring (outline)
+       with a 10% tint inside it. The ring pulses by growing slightly and fading. Variants set the
+       gap and ring width: notice 4/6 (Figma), icon-only 8/4 (round), tags 4/4. */
+    html.highlight-ai {
+      --ai-color: var(--brand-color-secondary);
+      --ai-tint: color-mix(in srgb, var(--ai-color) 10%, transparent);
+      --ai-ring-faded: color-mix(in srgb, var(--ai-color) 70%, transparent);
     }
+    :where(html.highlight-ai [data-ai-label]) { position: relative; z-index: 5; }
+    html.highlight-ai [data-ai-label] {
+      --ai-gap: 4px; --ai-ring: 4px; --ai-grow: 3px;
+      background-image: linear-gradient(var(--ai-tint), var(--ai-tint));
+      box-shadow: 0 0 0 var(--ai-gap) var(--ai-tint);
+      outline: var(--ai-ring) solid var(--ai-color);
+      outline-offset: var(--ai-gap);
+      animation: ai-pulse 1.6s ease-in-out infinite;
+    }
+    html.highlight-ai .sv-notice[data-ai-label] { --ai-ring: 6px; border-radius: 8px; }
+    html.highlight-ai .store-tile__ai[data-ai-label],
+    html.highlight-ai .feat-banner__ai[data-ai-label],
+    html.highlight-ai .sv-ailabel[data-ai-label] { --ai-gap: 8px; border-radius: 50%; }
+    @keyframes ai-pulse {
+      0%, 100% {
+        outline-offset: var(--ai-gap); outline-color: var(--ai-color);
+        box-shadow: 0 0 0 var(--ai-gap) var(--ai-tint);
+      }
+      50% {
+        outline-offset: calc(var(--ai-gap) + var(--ai-grow)); outline-color: var(--ai-ring-faded);
+        box-shadow: 0 0 0 calc(var(--ai-gap) + var(--ai-grow)) var(--ai-tint);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html.highlight-ai [data-ai-label] { animation: none; }
+    }
+    /* The ring sits outside the element, so containers that clip (rounded photo tiles)
+       must not clip while highlighting. Their photos (and the Domino's banner media) take the rounding themselves. */
+    html.highlight-ai .store-tile__image,
+    html.highlight-ai .feat-banner,
+    html.highlight-ai .ai-banner { overflow: visible; }
+    html.highlight-ai .store-tile__image > img.store-tile__photo { border-radius: 15px; }
+    html.highlight-ai .ai-banner > img { border-radius: 12px; }
+    html.highlight-ai .feat-banner__media { border-radius: 0 11px 11px 0; }
     .icon-btn {
       display: flex; align-items: center; justify-content: center; flex: none;
       border-radius: 896px; width: 40px; height: 40px;
@@ -796,7 +835,7 @@
               <div class="store-tile__content">
                 <div class="store-tile__top"></div>
               </div>
-              <img data-ai-label class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+              <img data-ai-label="Store tile icon" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
             </div>
             <div class="store-tile__desc">
               <div class="store-tile__name-row">
@@ -850,7 +889,7 @@
             </div>
             <div class="feat-banner__media"><img src="assets/img/dominos.png" alt="" /></div>
             <div class="feat-banner__go"><img src="assets/icons/arrow-forward-16.svg" alt="" /></div>
-            <img data-ai-label class="feat-banner__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+            <img data-ai-label="Ads featured banner icon" class="feat-banner__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
           </div>
 
           <article class="store-tile inert">
@@ -909,7 +948,7 @@
 
           <div class="ai-banner inert">
             <img src="assets/img/lunch-banner.jpg" alt="" />
-            <span data-ai-label class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" />Enhanced</span>
+            <span data-ai-label="Ads full width featured banner label" class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
           </div>
 
           <article class="store-tile inert">
@@ -962,7 +1001,7 @@
             </div>
             <div class="modal__body">
               <p class="pintxo-typography-body1">This ad has not been personalized nor is targeted on the basis of your account information or any prior browsing or purchasing activity. This ad is paid for by Domino’s Pizza.</p>
-              <span data-ai-label class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" />Enhanced</span>
+              <span data-ai-label="Ads featured banner label" data-ai-after="Ads featured banner icon" class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
             </div>
           </div>
           <div class="modal__unsafe"></div>
@@ -1018,7 +1057,7 @@
               </div>
               <div class="sv-title-row__chev"><img src="assets/icons/chevron-forward-32.svg" alt="" /></div>
             </div>
-            <div data-ai-label class="sv-ailabel"><img src="assets/icons/ai-sparkle-light.svg" alt="" /></div>
+            <div data-ai-label="Header image icon" class="sv-ailabel"><img src="assets/icons/ai-sparkle-light.svg" alt="" /></div>
           </div>
           <img class="sv-hero__curve" src="assets/icons/curve.svg" alt="" />
         </div>
@@ -1223,7 +1262,7 @@
             </div>
           </section>
 
-          <div data-ai-label class="sv-notice">
+          <div data-ai-label="Footer banner for multiple generated content" class="sv-notice">
             <img src="assets/icons/ai-sparkle-banner.svg" alt="" />
             <p>Some product images, descriptions, dietary tags and translations are generated by AI</p>
           </div>
@@ -1259,7 +1298,7 @@
                 <div class="list-item__body">
                   <div class="list-item__text">
                     <p class="list-item__title">Translate to Spanish</p>
-                    <p data-ai-label class="list-item__desc">AI generated</p>
+                    <p data-ai-label="Content translations" class="list-item__desc">AI generated</p>
                   </div>
                 </div>
               </div>
@@ -1293,7 +1332,7 @@
 
         <div class="pv-image">
           <img class="pv-image__photo" src="assets/img/avocado-supergreen.png" alt="Avocado supergreen" />
-          <span data-ai-label class="tag tag--neutral inert"><img src="assets/icons/ai-sparkle-dark.svg" alt="" />Enhanced</span>
+          <span data-ai-label="Image label" class="tag tag--neutral inert"><img src="assets/icons/ai-sparkle-dark.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
           <img class="pv-image__curve" src="assets/icons/curve-product.svg" alt="" />
         </div>
 
@@ -1318,7 +1357,7 @@
               </div>
             </div>
           </div>
-          <div data-ai-label class="sv-notice">
+          <div data-ai-label="Footer banner for multiple generated content" class="sv-notice">
             <img src="assets/icons/ai-sparkle-banner.svg" alt="" />
             <p>Product descriptions, dietary tags and translations are generated by AI</p>
           </div>
@@ -1341,6 +1380,12 @@
       var data = event.data;
       if (data && data.type === 'highlight-ai') {
         document.documentElement.classList.toggle('highlight-ai', !!data.value);
+      }
+      /* { type: 'reference-image', value: boolean }: "Enhanced" tags read "Reference". */
+      if (data && data.type === 'reference-image') {
+        document.querySelectorAll('[data-tag-text]').forEach(function (el) {
+          el.textContent = data.value ? el.dataset.tagTextReference : el.dataset.tagText;
+        });
       }
     });
 
@@ -1421,6 +1466,60 @@
           show(history[history.length - 1], false);
         }
       });
+      /* Wrapper page control: { type: 'focus-ai-label', index } brings the label into view
+         (switches screen, opens its modal, scrolls). Replies with { type: 'ai-labels', ... }. */
+      var aiLabels = Array.prototype.slice.call(document.querySelectorAll('[data-ai-label]'));
+      /* Stepper order is document order, except labels with data-ai-after="<name>",
+         which are placed right after the label of that name. */
+      aiLabels.filter(function (el) { return el.hasAttribute('data-ai-after'); }).forEach(function (el) {
+        var anchor = aiLabels.filter(function (other) {
+          return other.getAttribute('data-ai-label') === el.getAttribute('data-ai-after');
+        })[0];
+        if (!anchor) { return; }
+        aiLabels.splice(aiLabels.indexOf(el), 1);
+        aiLabels.splice(aiLabels.indexOf(anchor) + 1, 0, el);
+      });
+      function reportAiLabel(index) {
+        if (window.parent === window) { return; }
+        var el = aiLabels[index];
+        window.parent.postMessage({
+          type: 'ai-labels',
+          total: aiLabels.length,
+          index: index,
+          screen: el ? el.closest('.screen').getAttribute('aria-label') : null,
+          name: el ? el.getAttribute('data-ai-label') : null
+        }, window.location.origin);
+      }
+      function focusAiLabel(requested) {
+        var count = aiLabels.length;
+        var index = ((requested % count) + count) % count;
+        var el = aiLabels[index];
+        document.querySelectorAll('.modal.is-open').forEach(function (m) { setModal(m, false); });
+        var order = Object.keys(screens);
+        var name = el.closest('.screen').dataset.screen;
+        history = order.slice(0, order.indexOf(name) + 1);
+        show(name, false);
+        var modal = el.closest('.modal');
+        if (modal) {
+          setModal(modal, true);
+        } else {
+          var scroller = el.closest('.screen__scroll');
+          var box = el.getBoundingClientRect();
+          var view = scroller.getBoundingClientRect();
+          scroller.scrollTo({
+            top: scroller.scrollTop + (box.top - view.top) - (view.height / 2 - box.height / 2),
+            behavior: 'smooth'
+          });
+        }
+        reportAiLabel(index);
+      }
+      window.addEventListener('message', function (event) {
+        var data = event.data;
+        if (event.origin !== window.location.origin || !data) { return; }
+        if (data.type === 'focus-ai-label') { focusAiLabel(data.index); }
+        if (data.type === 'ai-labels-query') { reportAiLabel(-1); }
+      });
+      reportAiLabel(-1);
     })();
   </script>
 </body>
