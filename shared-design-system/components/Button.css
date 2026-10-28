@@ -1,0 +1,53 @@
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #cdced0;
+  background: #fff;
+  color: #161617;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ds-button:hover:not(:disabled) {
+  background: #f2f2f3;
+}
+
+.ds-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Default: rounded rectangle with text. */
+.ds-button--default {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Primary: filled dark. */
+.ds-button--primary {
+  padding: 8px 16px;
+  border-color: #161617;
+  border-radius: 8px;
+  background: #161617;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.ds-button--primary:hover:not(:disabled) {
+  background: #3a3a3b;
+}
+
+/* Icon: 32px round button for arrows and other glyphs. */
+.ds-button--icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+}

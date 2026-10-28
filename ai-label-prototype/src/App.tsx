@@ -5,8 +5,10 @@ import {
   useRef,
   useState,
 } from 'react'
+import { Button, Checkbox } from '@shared'
 
-const PROTOTYPE_URL = `${import.meta.env.BASE_URL}prototype/index.html`
+/* Relative to this page (/ai-label-prototype/), in dev and in the build. */
+const PROTOTYPE_URL = './prototype/index.html'
 const DEVICE_WIDTH = 390
 const DEVICE_HEIGHT = 844
 const PAGE_BOTTOM_PADDING = 32
@@ -225,27 +227,21 @@ export default function App() {
         <header className="page__header">
           <h1 className="page__title">AI labels touchpoints</h1>
         </header>
-        <label className="page__toggle">
-          <input
-            type="checkbox"
-            checked={highlightAi}
-            onChange={(event) => {
+        <Checkbox
+          label="Highlight AI labels"
+          checked={highlightAi}
+          onChange={(event) => {
               setHighlightAi(event.target.checked)
               if (event.target.checked) {
                 post({ type: 'focus-ai-label', index: 0 })
               }
             }}
-          />
-          Highlight AI labels
-        </label>
-        <label className="page__toggle">
-          <input
-            type="checkbox"
-            checked={referenceImage}
-            onChange={(event) => setReferenceImage(event.target.checked)}
-          />
-          Reference image
-        </label>
+        />
+        <Checkbox
+          label="Reference image"
+          checked={referenceImage}
+          onChange={(event) => setReferenceImage(event.target.checked)}
+        />
         {AI_CONTENT_SCREENS.map(({ id, label, options }) => (
           <ContentDropdown
             key={id}
@@ -260,28 +256,26 @@ export default function App() {
         {highlightAi && (
           <>
             <div className="label-nav" role="group" aria-label="AI labels">
-              <button
-                type="button"
-                className="label-nav__btn"
+              <Button
+                variant="icon"
                 aria-label="Previous AI label"
                 disabled={aiLabel.total === 0}
                 onClick={() => step(-1)}
               >
                 &larr;
-              </button>
+              </Button>
               <span className="label-nav__count" aria-live="polite">
                 {aiLabel.index + 1 > 0 ? aiLabel.index + 1 : '–'} /{' '}
                 {aiLabel.total}
               </span>
-              <button
-                type="button"
-                className="label-nav__btn"
+              <Button
+                variant="icon"
                 aria-label="Next AI label"
                 disabled={aiLabel.total === 0}
                 onClick={() => step(1)}
               >
                 &rarr;
-              </button>
+              </Button>
             </div>
             {aiLabel.name && (
               <p className="label-nav__name">

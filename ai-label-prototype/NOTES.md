@@ -5,17 +5,17 @@ Read this first when starting a new session on the prototype. Session-by-session
 ## What it is
 An HTML prototype of 3 screens: Store wall -> Store view -> Product view. It has vertical scrolling, click navigation and working back navigation. It is wrapped in a Vite + React + TS site that shows it in a 390x844 device frame.
 
-- Live: https://jordialonso1.github.io/ai-label-prototype/
+- Live: https://jordialonso1.github.io/<repo-name>/ai-label-prototype/ (repo is being renamed to `prototypes-jordi-alonso`)
 - Wrapper page never scrolls: `.page` is `100svh` with `overflow: hidden`, and `src/App.tsx` scales the 390x844 device down (`transform: scale`, never up, minimum 0.3) so it fits the viewport height and width. The prototype inside keeps its real 390x844 layout.
 - Prototype only (no frame): `/prototype/index.html`
-- Deploys automatically on every push to `main` that touches `store-flow/**` (`.github/workflows/deploy-store-flow.yml`).
+- Deploys automatically on every push to `main` (`.github/workflows/deploy.yml`, whole monorepo).
 
 ## Layout
-- `public/prototype/index.html`: the whole prototype (CSS, markup and nav JS in one file).
-- `public/prototype/assets/icons`, `assets/img`: assets downloaded from Figma.
-- `public/prototype/fonts/`: Glovo Sans woff2 files. Never base64 them.
-- `src/App.tsx`, `src/app.css`: the wrapper page with the iframe device frame.
-- Scripts: `npm run dev`, `lint`, `typecheck`, `build`.
+- `prototype/index.html`: the whole prototype (CSS, markup and nav JS in one file).
+- `prototype/assets/icons`, `assets/img`: assets downloaded from Figma.
+- `prototype/fonts/`: Glovo Sans woff2 files. Never base64 them.
+- `src/App.tsx`, `src/app.css`: the wrapper page (generic controls live in `../shared-design-system`) with the iframe device frame.
+- Scripts (run from the repo root): `npm run dev`, `lint`, `typecheck`, `build`. Dev URL: `/ai-label-prototype/`.
 - Do not touch `ux-tools/` or `uds-react/` (gitignored, read-only references).
 
 ## Figma source
@@ -65,5 +65,5 @@ An HTML prototype of 3 screens: Store wall -> Store view -> Product view. It has
 - Console clean in a browser.
 - `npm run lint`, `npm run typecheck` and `npm run build` pass.
 - Each changed screen checked against its Figma frame, with deltas reported.
-- No files touched outside `store-flow/`.
+- No files touched outside `ai-label-prototype/` and `shared-design-system/`.
 - Do not commit or push unless the user asks. Pushing to `main` triggers a public deploy.
