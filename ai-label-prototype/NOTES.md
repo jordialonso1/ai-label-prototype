@@ -5,7 +5,7 @@ Read this first when starting a new session on the prototype. Session-by-session
 ## What it is
 An HTML prototype of 3 screens: Store wall -> Store view -> Product view. It has vertical scrolling, click navigation and working back navigation. It is wrapped in a Vite + React + TS site that shows it in a 390x844 device frame.
 
-- Live: https://jordialonso1.github.io/<repo-name>/ai-label-prototype/ (repo is being renamed to `prototypes-jordi-alonso`)
+- Live: https://jordialonso1.github.io/prototypes-jordi/ai-label-prototype/
 - Wrapper page never scrolls: `.page` is `100svh` with `overflow: hidden`, and `src/App.tsx` scales the 390x844 device down (`transform: scale`, never up, minimum 0.3) so it fits the viewport height and width. The prototype inside keeps its real 390x844 layout.
 - Prototype only (no frame): `/prototype/index.html`
 - Deploys automatically on every push to `main` (`.github/workflows/deploy.yml`, whole monorepo).
