@@ -2,6 +2,34 @@
 
 Chronological context for future sessions. `NOTES.md` holds the current rules and state. This file holds what happened, why, and what is still open. Newest session first.
 
+## 2026-10-28 (session 4: footer banners synced with Figma)
+
+### What changed
+1. **Store view footer banner removed** (Figma `141:37985` is now `hidden`). The banner markup, its stepper label and the "Store view AI content" dropdown are gone. Stepper total is 8 (7 when the Product banner is hidden).
+2. **Product view banner copy** (Figma `160:38148`): "Images, descriptions and dietary tags are generated with AI". The pattern is now "<List> are generated with AI": no "Some", "with" instead of "by", first letter capitalised (`setAiContent` in the prototype script).
+3. **Dropdown logic kept**: the Product view dropdown still builds the sentence from the ticked items and hides the banner when none is ticked. It keeps all four options (Images, Descriptions, Dietary tags, Translations, all ticked by default). The user chose this over matching Figma's three items exactly, so with all four ticked the copy lists translations too.
+
+### Findings worth keeping
+- The Figma banner text layer could not be read through `get_design_context`, which returned a Code Connect prompt instead of the design (not followed, since it was not asked for). The copy was read from a `get_screenshot` of `160:38148`, so check the wording against Figma if it looks off.
+- Banner geometry in the prototype matches Figma (icon x=12, text x=40, height 64). The width is 338px, not Figma's 370px, because the prototype is 390px wide with its own side padding. Pre-existing.
+- A fresh worktree has no `node_modules`: run `npm ci` before `lint`, `typecheck` or `build`.
+
+### Verified
+- `npm run lint`, `typecheck` and `build` pass.
+- Driving the real controls in the browser pane: all four ticked, three ticked (no translations: matches Figma exactly), one ticked, two ticked, none ticked (banner hidden), stepper "1 / 8". The Store view ends on the last menu item with no banner.
+
+4. **Store view item rows** (user updated the spacings in Figma, `141:29408` / `141:29410`): the description box is always 3 lines (60px). Long text is cut with an ellipsis (`-webkit-line-clamp: 3`), short text keeps the spare line blank (`min-height: 60px`). This replaces the old zero-width-space trick, which let long text run to 6 lines. Rows are now 192 / 212 / 212px tall as in Figma (were 272 / 212 / 292).
+
+5. **Product view spacings** (user selected the whole Product view frame `141:37235`): info block to banner gap 32 (was 24); description to tags 8 (was 16), tags to counter 24 (was 16), via a new `.pv-text` wrapper (description + tags) inside `.pv-details`; price line box 28px (Figma's 24px space sets it; was 24), done as inline spans in a 24/28 paragraph with a 6px margin before the old price; footer 92px tall, 40px under the button (was 84 / 32); bottom padding under the banner 44 (Figma footer top sits 44px below the banner in the 1064px frame; was 24).
+
+### Store view measured against Figma (402 -> 390 wide, vertical values compared)
+Header 288, bottom gradient block 160 + 128, Logistics 268 + 120, tabs 388 + 56, Order again 476 + 258, Top sellers 766 + 696, Honest plates 1494 + 696. All equal. Section gap 32, header to first row 16, row gap 16.
+
+### Open items
+- Figma's last menu container is 821px tall (125px below the last row, room for the hidden banner). The prototype ends 32px below the last row. Not changed, since that looks like leftover frame height, not a design decision. Ask the user if the bottom space should match.
+- The Translations row, "Enhanced" tags and sparkles still do not react to the dropdown.
+- Not committed.
+
 ## 2026-10-14 (session 3: AI content dropdowns, Store view hero)
 
 ### What changed
