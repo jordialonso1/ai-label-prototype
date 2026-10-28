@@ -23,17 +23,12 @@ const AI_CONTENT = [
   { id: 'translations', label: 'Translations' },
 ] as const
 
-/* Each screen offers its own subset: the Product view has no images option. */
+/* Screens whose footer banner follows the dropdown. The Store view banner was removed in Figma. */
 const AI_CONTENT_SCREENS = [
-  {
-    id: 'store-view',
-    label: 'Store view',
-    options: AI_CONTENT.map((item) => item.id) as string[],
-  },
   {
     id: 'product-view',
     label: 'Product view',
-    options: ['descriptions', 'dietary tags', 'translations'],
+    options: AI_CONTENT.map((item) => item.id) as string[],
   },
 ] as const
 
@@ -137,8 +132,7 @@ export default function App() {
   const [highlightAi, setHighlightAi] = useState(false)
   const [referenceImage, setReferenceImage] = useState(false)
   const [aiContent, setAiContent] = useState<AiContentState>({
-    'store-view': [...AI_CONTENT_SCREENS[0].options],
-    'product-view': [...AI_CONTENT_SCREENS[1].options],
+    'product-view': [...AI_CONTENT_SCREENS[0].options],
   })
   const [aiLabel, setAiLabel] = useState<AiLabelState>({
     total: 0,
