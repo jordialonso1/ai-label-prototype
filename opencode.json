@@ -1,4 +1,4 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["store-flow/NOTES.md"]
+  "instructions": ["ai-label-prototype/NOTES.md"]
 }

@@ -18,7 +18,9 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": { "@shared": ["shared-design-system/index.ts"], "@shared/*": ["shared-design-system/*"] }
   },
-  "include": ["src"]
+  "include": ["ai-label-prototype/src", "signup-login-flow/src", "shared-design-system"]
 }

@@ -1,2 +1,7 @@
 uds-react/
 ux-tools/
+node_modules
+dist
+*.local
+.DS_Store
+.vite
