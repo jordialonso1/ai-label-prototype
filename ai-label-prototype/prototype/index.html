@@ -295,6 +295,13 @@
     }
     .tag--promo { background: #e70e42; color: #fff; }
     .tag--neutral { background: var(--background-color-secondary); color: var(--text-color-primary); }
+    .tag--contrast { background: #161617; color: #fff; }
+    .tag--positive { background: #e0f0ed; color: #017963; }
+    .tag--loyalty { background: #594ddb; color: #fff; }
+    .tag--sponsored { background: rgba(22, 23, 23, 0.6); color: #fff; }
+    .tag-double { display: inline-flex; border-radius: 4px; background: #594ddb; }
+    .tag-double .tag--promo { border-radius: 4px; }
+    .tag-double .tag--loyalty b { font-weight: 700; }
     .tag img { width: 16px; height: 16px; }
 
     /* Review aid: the wrapper page toggles html.highlight-ai via postMessage.
@@ -336,10 +343,9 @@
     /* The ring sits outside the element, so containers that clip (rounded photo tiles)
        must not clip while highlighting. Their photos (and the Domino's banner media) take the rounding themselves. */
     html.highlight-ai .store-tile__image,
-    html.highlight-ai .feat-banner,
-    html.highlight-ai .ai-banner { overflow: visible; }
+    html.highlight-ai .feat-banner { overflow: visible; }
     html.highlight-ai .store-tile__image > img.store-tile__photo { border-radius: 15px; }
-    html.highlight-ai .ai-banner > img { border-radius: 12px; }
+    html.highlight-ai .store-tile--v3 .store-tile__image > img.store-tile__photo { border-radius: 24px; }
     html.highlight-ai .feat-banner__media { border-radius: 0 11px 11px 0; }
     .icon-btn {
       display: flex; align-items: center; justify-content: center; flex: none;
@@ -438,6 +444,24 @@
     }
     .store-tile__top { display: flex; }
     .store-tile__ai { position: absolute; right: 7px; bottom: 7px; width: 16px; height: 16px; }
+    .store-tile__toggle {
+      position: absolute; top: 7px; right: 7px; width: 32px; height: 32px; border-radius: 896px;
+      background: #fff; border: 1px solid var(--border-color-primary); display: flex; align-items: center; justify-content: center;
+    }
+    .store-tile__toggle img { width: 24px; height: 24px; }
+    .store-tile--feed .store-tile__content { inset: -1px; }
+    /* storeTileV3 (Figma 266:27283): 24px radius, no border, 16px side insets */
+    .store-tile--v3 .store-tile__image { border: 0; border-radius: 24px; }
+    .store-tile--v3 .store-tile__toggle { top: 8px; right: 8px; }
+    .store-tile--v3 .store-tile__ai { right: 16px; bottom: 32px; }
+    .store-tile__tags { position: absolute; left: 16px; top: 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .avatar-sq { position: absolute; overflow: hidden; background: #fff; border: 1px solid rgba(22, 23, 23, 0.05); }
+    .avatar-sq img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .avatar-sq--s { width: 32px; height: 32px; border-radius: 8px; }
+    .avatar-sq--m { width: 64px; height: 64px; border-radius: 12px; }
+    .store-tile--v3 .avatar-sq--m { left: 8px; top: 88px; }
+    .feat-banner .avatar-sq--s { left: 241px; top: 87px; }
+    .store-tile__tag-br { position: absolute; right: 16px; bottom: 8px; }
     .store-tile__desc { display: flex; flex-direction: column; gap: 4px; }
     .store-tile__name-row { display: flex; align-items: flex-start; gap: 12px; }
     .store-tile__name { flex: 1; min-width: 0; display: flex; align-items: center; gap: 4px; }
@@ -454,6 +478,7 @@
     .st-time span:last-child, .st-fee span:last-child { font-size: 14px; line-height: 20px; }
     .st-fee { min-height: 20px; }
     .st-fee img { width: 16px; height: 16px; }
+    .st-sponsored { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; }
     .st-social { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; }
     .st-avatars { display: flex; align-items: center; width: 64px; height: 24px; }
     .st-avatar {
@@ -485,7 +510,8 @@
       background: #fff; border: 1px solid var(--border-color-primary); display: flex; align-items: center; justify-content: center;
     }
     .feat-banner__go img { width: 16px; height: 16px; }
-    .feat-banner__ai { position: absolute; right: 8px; top: 8px; width: 16px; height: 16px; }
+    .feat-banner__tag { position: absolute; top: 7px; right: 7px; }
+    .feat-banner__ai { position: absolute; right: 7px; top: 71px; width: 16px; height: 16px; }
     .feat-banner__info[data-modal-open] { cursor: pointer; align-self: flex-start; }
 
     /* Ad modalsheet (Figma 160:38331): overlay on the same screen.
@@ -537,9 +563,12 @@
       .modal, .modal__scrim, .modal__sheet { transition-duration: 0.01s; }
     }
 
-    .ai-banner { position: relative; height: 128px; border-radius: 12px; overflow: hidden; background: #fff; }
-    .ai-banner > img { width: 100%; height: 100%; object-fit: cover; }
-    .ai-banner .tag { position: absolute; right: 8px; bottom: 8px; }
+    /* Full-width banner (Figma 160:38411): 375px wide, so it runs 5px past the feed padding as in Figma. */
+    .ai-banner { position: relative; width: calc(100% + 5px); height: 128px; border-radius: 12px; background: #fff; }
+    .ai-banner__media { position: absolute; inset: 0; overflow: hidden; border-radius: 12px; }
+    .ai-banner__media img { position: absolute; max-width: none; width: 139.73%; height: 202.64%; left: 0.27%; top: -53.76%; }
+    .ai-banner .feat-banner__go { right: 8px; bottom: 8px; }
+    .ai-banner > .tag--sponsored { position: absolute; right: 8px; top: 8px; }
 
     /* Liquid glass tab bar (from the real app): a floating translucent pill over
        the feed. Blur + saturation let the content show through; the inner
@@ -844,52 +873,29 @@
         <main class="sw-feed">
 
           <!-- Honest Greens: the only tile that navigates (to Store view) -->
-          <article class="store-tile" data-nav="store-view" role="link" tabindex="0" aria-label="Honest Greens">
+          <article class="store-tile store-tile--v3" data-nav="store-view" role="link" tabindex="0" aria-label="Honest Greens">
             <div class="store-tile__image">
               <img class="store-tile__photo" src="assets/img/honest-greens.png" alt="" />
-              <div class="store-tile__content">
-                <div class="store-tile__top"></div>
+              <div class="store-tile__tags">
+                <span class="tag tag--neutral"><img src="assets/icons/house-16.svg" alt="" />Same prices as in store</span>
+                <span class="tag-double"><span class="tag tag--promo">-20%</span><span class="tag tag--loyalty"><b>PRIME</b> -30%</span></span>
               </div>
+              <span class="tag tag--contrast store-tile__tag-br">Only on Glovo</span>
               <img data-ai-label="Store tile icon" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+              <div class="store-tile__toggle"><img src="assets/icons/heart.svg" alt="" /></div>
             </div>
             <div class="store-tile__desc">
               <div class="store-tile__name-row">
                 <div class="store-tile__name"><p>Honest Greens</p></div>
-                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
               </div>
               <div class="store-tile__status">
                 <div class="st-rating">
-                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up.svg" alt="" /></span>
                   <b>98%</b><span>(413)</span>
                 </div>
-                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
                 <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="store-tile inert">
-            <div class="store-tile__image">
-              <img class="store-tile__photo" src="assets/img/burger-king.jpg" alt="" />
-              <div class="store-tile__content">
-                <div class="store-tile__top"><span class="tag tag--promo">2x1 in some products</span></div>
-              </div>
-            </div>
-            <div class="store-tile__desc">
-              <div class="store-tile__name-row">
-                <div class="store-tile__name">
-                  <span class="toprated"><span class="blob16"><img src="assets/icons/blob-top-rated.svg" alt="" /><img src="assets/icons/crown.svg" alt="" /></span></span>
-                  <p>Burger King</p>
-                </div>
-                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
-              </div>
-              <div class="store-tile__status">
-                <div class="st-rating">
-                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
-                  <b>98%</b><span>(413)</span>
-                </div>
                 <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
-                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
+                <div class="st-sponsored"><span class="st-dot">•</span><span>Sponsored</span></div>
               </div>
             </div>
           </article>
@@ -903,87 +909,62 @@
               <div class="feat-banner__info" data-modal-open="ad-modal" role="button" tabindex="0"><span>Info</span><img src="assets/icons/info-circle-16.svg" alt="" /></div>
             </div>
             <div class="feat-banner__media"><img src="assets/img/dominos.png" alt="" /></div>
+            <span class="avatar-sq avatar-sq--s"><img src="assets/img/logo-dominos.png" alt="" /></span>
+            <span class="tag tag--promo feat-banner__tag">-20%</span>
             <div class="feat-banner__go"><img src="assets/icons/arrow-forward-16.svg" alt="" /></div>
             <img data-ai-label="Ads featured banner icon" class="feat-banner__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
           </div>
 
-          <article class="store-tile inert">
+          <article class="store-tile store-tile--v3 inert">
             <div class="store-tile__image">
-              <img class="store-tile__photo" src="assets/img/baby-jalebi.png" alt="" />
-              <div class="store-tile__content">
-                <div class="store-tile__top"></div>
+              <img class="store-tile__photo" src="assets/img/ametller-origen.png" alt="" />
+              <span class="avatar-sq avatar-sq--m"><img src="assets/img/logo-ametller-origen.png" alt="" /></span>
+              <div class="store-tile__tags">
+                <span class="tag-double"><span class="tag tag--promo">-20%</span><span class="tag tag--loyalty"><b>PRIME</b> -30%</span></span>
+                <span class="tag tag--neutral"><img src="assets/icons/house-16.svg" alt="" />Same prices as in store</span>
               </div>
+              <span class="tag tag--positive store-tile__tag-br"><img src="assets/icons/carrot-16.svg" alt="" />Freshness guarantee</span>
+              <img data-ai-label="Store tile icon (Ametller Origen)" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+              <div class="store-tile__toggle"><img src="assets/icons/heart.svg" alt="" /></div>
             </div>
             <div class="store-tile__desc">
               <div class="store-tile__name-row">
-                <div class="store-tile__name"><p>Baby Jalebi</p></div>
-                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+                <div class="store-tile__name"><p>Ametller Origen</p></div>
               </div>
               <div class="store-tile__status">
                 <div class="st-rating">
-                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
-                  <b>95%</b><span>(413)</span>
-                </div>
-                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
-                <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="store-tile inert">
-            <div class="store-tile__image">
-              <img class="store-tile__photo" src="assets/img/youme-sushi.png" alt="" />
-              <div class="store-tile__content">
-                <div class="store-tile__top"><span class="tag tag--promo">2x1 in some products</span></div>
-              </div>
-            </div>
-            <div class="store-tile__desc">
-              <div class="store-tile__name-row">
-                <div class="store-tile__name"><p>Youme Sushi</p></div>
-                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
-              </div>
-              <div class="store-tile__status">
-                <div class="st-rating">
-                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up.svg" alt="" /></span>
                   <b>98%</b><span>(413)</span>
                 </div>
-                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
                 <div class="st-fee"><span class="st-dot">•</span><img src="assets/icons/fee-rider.svg" alt="" /><span>2,49€</span></div>
-              </div>
-              <div class="st-social">
-                <div class="st-avatars">
-                  <span class="st-avatar" style="background:#d3e7f3;color:#1372aa;">A</span>
-                  <span class="st-avatar" style="background:#e6e5f6;color:#594ddb;">B</span>
-                  <span class="st-avatar" style="background:#f9ebeb;color:#d41616;">C</span>
-                </div>
-                <span>Ordered by 4 friends</span>
+                <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
+                <div class="st-sponsored"><span class="st-dot">•</span><span>Sponsored</span></div>
               </div>
             </div>
           </article>
 
           <div class="ai-banner inert">
-            <img src="assets/img/lunch-banner.jpg" alt="" />
-            <span data-ai-label="Ads full width featured banner label" class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
+            <div class="ai-banner__media"><img src="assets/img/pepsi-banner.png" alt="" /></div>
+            <div class="feat-banner__go"><img src="assets/icons/arrow-forward-16.svg" alt="" /></div>
+            <span data-ai-label="Ads full width featured banner label" class="tag tag--sponsored"><img src="assets/icons/ai-sparkle-light.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
           </div>
 
-          <article class="store-tile inert">
+          <article class="store-tile store-tile--feed inert">
             <div class="store-tile__image">
-              <img class="store-tile__photo" src="assets/img/healthy-poke.jpg" alt="" />
+              <img class="store-tile__photo" src="assets/img/burger-king.jpg" alt="" />
               <div class="store-tile__content">
-                <div class="store-tile__top"></div>
+                <div class="store-tile__top"><span class="tag tag--promo">2x1 in some products</span></div>
               </div>
+              <img data-ai-label="Store tile icon (Burger King)" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+              <div class="store-tile__toggle"><img src="assets/icons/heart.svg" alt="" /></div>
             </div>
             <div class="store-tile__desc">
               <div class="store-tile__name-row">
-                <div class="store-tile__name">
-                  <span class="toprated"><span class="blob16"><img src="assets/icons/blob-top-rated.svg" alt="" /><img src="assets/icons/crown.svg" alt="" /></span></span>
-                  <p>Healthy Poke</p>
-                </div>
-                <div class="store-tile__fav"><img src="assets/icons/heart.svg" alt="" /></div>
+                <div class="store-tile__name"><p>Burger King</p></div>
               </div>
               <div class="store-tile__status">
                 <div class="st-rating">
-                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up-white.svg" alt="" /></span>
+                  <span class="blob16"><img src="assets/icons/blob-green.svg" alt="" /><img src="assets/icons/thumb-up.svg" alt="" /></span>
                   <b>98%</b><span>(413)</span>
                 </div>
                 <div class="st-time"><span class="st-dot">•</span><span>20-30min</span></div>
