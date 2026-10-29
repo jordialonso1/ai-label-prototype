@@ -1,21 +1,393 @@
-.screen {
+/* Stop the browser's two-finger swipe from navigating back/forward (and the
+   rubber-band bounce) while panning the map. The page never scrolls. */
+html,
+body {
+  overscroll-behavior: none;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100svh;
+  overflow: hidden;
+  background: #f4f4f5;
+}
+
+.page__header {
+  grid-column: 1 / -1;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e4e4e7;
+}
+
+.page__title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+  color: #202125;
+}
+
+/* The map has its own light / dark theme (the rest of the page stays light). */
+.page__map {
+  --m-bg: #fff;
+  --m-border: #e4e4e7;
+  --m-hint: #6e6e73;
+  --m-edge: #3a3a3a;
+  --m-text: #202125;
+  --m-label-bg: #fff;
+  --m-label-border: #d4d4d8;
+  --m-label-text: #3a3a3a;
+  --m-yes: #17a34a;
+  --m-yes-text: #0f7a36;
+  --m-no: #dc2626;
+  --m-no-text: #b91c1c;
+  --m-screen-fill: #fdf3b8;
+  --m-screen-stroke: #c9a24a;
+  --m-screen-hover: #fde987;
+  --m-screen-sel: #ffd84a;
+  --m-sel-stroke: #202125;
+  --m-code: #8a6d1f;
+  --m-dec-fill: #c9dafc;
+  --m-dec-stroke: #4a6bc4;
+  --m-dec-hover: #b3c9fa;
+  --m-dec-sel: #9db9f7;
+  --m-dec-sel-stroke: #1e3a8a;
+  --m-orange-fill: #f1d3b0;
+  --m-orange-stroke: #c9a24a;
+  --m-purple-fill: #dcd7f7;
+  --m-purple-stroke: #6b4fd6;
+  --m-green-fill: #b9ecc9;
+  --m-green-stroke: #2f8a4b;
+  --m-hover-filter: brightness(0.96);
+  --m-btn-bg: #fff;
+  --m-btn-border: #d4d4d8;
+  --m-btn-text: #202125;
+
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  min-width: 0;
+  background: var(--m-bg);
+  border-right: 1px solid var(--m-border);
+}
+
+.page__map[data-theme='dark'] {
+  --m-bg: #16171a;
+  --m-border: #2c2d31;
+  --m-hint: #9a9aa3;
+  --m-edge: #9a9aa3;
+  --m-text: #ececf0;
+  --m-label-bg: #25262b;
+  --m-label-border: #44454c;
+  --m-label-text: #d4d4d8;
+  --m-yes: #34d27b;
+  --m-yes-text: #5ee59a;
+  --m-no: #f87171;
+  --m-no-text: #fca5a5;
+  --m-screen-fill: #4a3d12;
+  --m-screen-stroke: #c9a24a;
+  --m-screen-hover: #5c4b16;
+  --m-screen-sel: #8a6d1f;
+  --m-sel-stroke: #fff;
+  --m-code: #e0c36a;
+  --m-dec-fill: #1f2f55;
+  --m-dec-stroke: #5b7fe0;
+  --m-dec-hover: #27396a;
+  --m-dec-sel: #2f4a8c;
+  --m-dec-sel-stroke: #cfe0ff;
+  --m-orange-fill: #4a3320;
+  --m-orange-stroke: #c9a24a;
+  --m-purple-fill: #2e2a52;
+  --m-purple-stroke: #8b74ff;
+  --m-green-fill: #1c3f2b;
+  --m-green-stroke: #3fae65;
+  --m-hover-filter: brightness(1.15);
+  --m-btn-bg: #25262b;
+  --m-btn-border: #44454c;
+  --m-btn-text: #ececf0;
+}
+
+.page__hint {
+  margin: 0;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--m-hint);
+  border-top: 1px solid var(--m-border);
+}
+
+.page__proto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
-  max-width: 390px;
-  margin: 0 auto;
-  padding: 56px 16px;
+  padding: 24px;
+  min-width: 0;
+  min-height: 0;
 }
 
-.screen h1 {
-  margin: 0;
-  font-size: 24px;
-  line-height: 28px;
+.page__controls {
+  display: flex;
+  gap: 16px;
 }
 
-.screen p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 20px;
+/* Map */
+.map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  cursor: grab;
+  touch-action: none;
+  overscroll-behavior: none;
+  user-select: none;
+}
+
+.map:active {
+  cursor: grabbing;
+}
+
+.map__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.map__edge {
+  fill: none;
+  stroke: var(--m-edge);
+  stroke-width: 1.4;
+}
+
+.map__edge-label rect {
+  fill: var(--m-label-bg);
+  stroke: var(--m-label-border);
+  stroke-width: 1;
+}
+
+.map__edge-label text {
+  font-size: 10px;
+  fill: var(--m-label-text);
+  pointer-events: none;
+}
+
+.map__text {
+  font-size: 10px;
+  fill: var(--m-text);
+  pointer-events: none;
+}
+
+.map__code {
+  font-size: 6.5px;
+  font-weight: 700;
+  fill: var(--m-code);
+  pointer-events: none;
+}
+
+.map__decision {
+  fill: var(--m-dec-fill);
+  stroke: var(--m-dec-stroke);
+  stroke-width: 1.5;
+}
+
+.map__backend {
+  cursor: pointer;
+  outline: none;
+}
+
+.map__backend rect {
+  fill: var(--tone-fill);
+  stroke: var(--tone-stroke);
+  stroke-width: 1.5;
+}
+
+.map__backend--orange {
+  --tone-fill: var(--m-orange-fill);
+  --tone-stroke: var(--m-orange-stroke);
+}
+
+.map__backend--purple {
+  --tone-fill: var(--m-purple-fill);
+  --tone-stroke: var(--m-purple-stroke);
+}
+
+.map__backend--green {
+  --tone-fill: var(--m-green-fill);
+  --tone-stroke: var(--m-green-stroke);
+}
+
+.map__backend.is-selected rect {
+  stroke: var(--m-sel-stroke);
+  stroke-width: 3;
+}
+
+.map__arrow {
+  fill: var(--m-edge);
+}
+
+.map__arrow--yes {
+  fill: var(--m-yes);
+}
+
+.map__arrow--no {
+  fill: var(--m-no);
+}
+
+.map__backend:hover rect,
+.map__backend:focus-visible rect {
+  filter: var(--m-hover-filter);
+}
+
+.map__decision-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.map__decision-node:hover .map__decision,
+.map__decision-node:focus-visible .map__decision {
+  fill: var(--m-dec-hover);
+}
+
+.map__decision-node.is-selected .map__decision {
+  fill: var(--m-dec-sel);
+  stroke: var(--m-dec-sel-stroke);
+  stroke-width: 3;
+}
+
+.map__edge--yes {
+  stroke: var(--m-yes);
+  stroke-width: 3;
+}
+
+.map__edge--no {
+  stroke: var(--m-no);
+  stroke-width: 3;
+}
+
+.map__edge-label--yes rect {
+  stroke: var(--m-yes);
+  stroke-width: 1.5;
+}
+
+.map__edge-label--yes text {
+  fill: var(--m-yes-text);
+  font-weight: 700;
+}
+
+.map__edge-label--no rect {
+  stroke: var(--m-no);
+  stroke-width: 1.5;
+}
+
+.map__edge-label--no text {
+  fill: var(--m-no-text);
+  font-weight: 700;
+}
+
+.map__screen {
+  cursor: pointer;
+  outline: none;
+}
+
+.map__screen rect {
+  fill: var(--m-screen-fill);
+  stroke: var(--m-screen-stroke);
+  stroke-width: 1.5;
+}
+
+.map__screen:hover rect,
+.map__screen:focus-visible rect {
+  fill: var(--m-screen-hover);
+}
+
+.map__screen.is-selected rect {
+  fill: var(--m-screen-sel);
+  stroke: var(--m-sel-stroke);
+  stroke-width: 3;
+}
+
+.map__fit,
+.map-toggle {
+  position: absolute;
+  top: 12px;
+  padding: 6px 12px;
+  border: 1px solid var(--m-btn-border);
+  border-radius: 999px;
+  background: var(--m-btn-bg);
+  color: var(--m-btn-text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.map__fit {
+  right: 12px;
+}
+
+.map-toggle {
+  left: 12px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Small switch inside the toggle button. */
+.map-toggle__track {
+  position: relative;
+  width: 26px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--m-btn-border);
+  transition: background 0.15s;
+}
+
+.map-toggle__track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--m-btn-bg);
+  transition: transform 0.15s;
+}
+
+.map-toggle[aria-checked='true'] .map-toggle__track {
+  background: #4a6bc4;
+}
+
+.map-toggle[aria-checked='true'] .map-toggle__track::after {
+  transform: translateX(12px);
+}
+
+/* Prototype */
+.device-slot {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+.device-box {
+  flex: none;
+}
+
+.device {
+  transform-origin: top left;
+  border-radius: 36px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 0 10px #202125, 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.device__screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }

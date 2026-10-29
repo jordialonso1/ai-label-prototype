@@ -10,7 +10,7 @@ const prototypes = ['ai-label-prototype', 'signup-login-flow']
 
 /* Plain static folders (not bundled, e.g. HTML loaded in an iframe) that must
    be copied as-is into dist. In dev Vite already serves them from the root. */
-const staticDirs = ['ai-label-prototype/prototype']
+const staticDirs = ['ai-label-prototype/prototype', 'signup-login-flow/prototype']
 
 function copyStaticDirs(): Plugin {
   return {
