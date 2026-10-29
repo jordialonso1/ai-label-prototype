@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es" data-theme="core" data-ui-mode="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup / login prototype</title>
+  <style>
+    @font-face { font-family: 'Glovo Sans'; src: url(fonts/GlovoSans-Book.woff2) format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Glovo Sans'; src: url(fonts/GlovoSans-Medium.woff2) format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Glovo Sans'; src: url(fonts/GlovoSans-Bold.woff2) format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; }
+    body { font-family: 'Glovo Sans', system-ui, sans-serif; color: #202125; background: #fff; max-width: 390px; margin: 0 auto; overflow: hidden; }
+
+    .screen { display: none; flex-direction: column; height: 100%; }
+    .screen.is-active { display: flex; }
+
+    /* Landing */
+    .hero { position: relative; height: 38%; background: #ffc244; display: flex; align-items: center; justify-content: center; }
+    .hero__logo { font-size: 44px; font-weight: 700; color: #00a082; letter-spacing: -1px; }
+    .hero__skip { position: absolute; top: 48px; right: 16px; padding: 8px 14px; border-radius: 999px; background: #fff; font-weight: 700; font-size: 14px; }
+    .sheet { flex: 1; margin-top: -20px; background: #fff; border-radius: 24px 24px 0 0; padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+    .sheet h1 { font-size: 28px; line-height: 32px; font-weight: 700; text-align: center; }
+    .sheet__sub { text-align: center; color: #6e6e73; font-size: 16px; line-height: 22px; }
+    .phone-row { display: flex; gap: 8px; }
+    .field { border: 1.5px solid #e4e4e7; border-radius: 16px; padding: 10px 14px; font-size: 16px; color: #8a8a8f; }
+    .field--prefix { width: 108px; }
+    .field--prefix small { display: block; font-size: 12px; font-weight: 500; }
+    .field--prefix strong { color: #202125; }
+    .field--number { flex: 1; display: flex; align-items: center; }
+    .btn-row { display: flex; gap: 8px; }
+    .btn { flex: 1; border-radius: 999px; padding: 16px; font: inherit; font-weight: 700; font-size: 16px; text-align: center; border: 1.5px solid #e4e4e7; background: #fff; color: #202125; }
+    .btn--primary { background: #2f7a64; border-color: #2f7a64; color: #fff; }
+    .or { text-align: center; color: #6e6e73; font-size: 14px; }
+    .legal { text-align: center; color: #6e6e73; font-size: 13px; line-height: 18px; margin-top: auto; }
+
+    /* Placeholder screens (replaced by real designs from Figma) */
+    .stub { padding: 72px 20px 20px; gap: 12px; }
+    .stub h1 { font-size: 26px; line-height: 30px; font-weight: 700; }
+    .stub p { color: #6e6e73; font-size: 15px; line-height: 21px; }
+    .stub__tag { align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: #fff3c4; font-size: 12px; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <section class="screen is-active" id="screen-landing" data-screen="landing" aria-label="Sign-in landing">
+    <div class="hero">
+      <span class="hero__skip">Omitir</span>
+      <span class="hero__logo">Glovo</span>
+    </div>
+    <div class="sheet">
+      <h1>¡Hola!</h1>
+      <p class="sheet__sub">Empecemos por tu número de teléfono</p>
+      <div class="phone-row">
+        <div class="field field--prefix"><small>Prefijo</small><strong>🇪🇸 +34</strong></div>
+        <div class="field field--number">Número de teléfono</div>
+      </div>
+      <div class="btn-row">
+        <div class="btn">WhatsApp</div>
+        <div class="btn btn--primary">SMS</div>
+      </div>
+      <p class="or">o con</p>
+      <div class="btn">Google</div>
+      <div class="btn">Apple</div>
+      <div class="btn">Facebook</div>
+      <div class="btn">E-mail</div>
+      <p class="legal">Al continuar, aceptas automáticamente nuestras Condiciones, Política de privacidad y Política de cookies.</p>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      /* Placeholder screens, one per yellow node of the map. Keep ids in sync
+         with SCREENS in src/flow.ts. Replace each with its Figma design. */
+      var STUBS = [
+        ['send-otp', 'Send one-time password (OTP)'],
+        ['input-otp', 'Input OTP'],
+        ['protect-account', 'Protect your account'],
+        ['welcome-methods', 'Welcome back! Screen with existing methods'],
+        ['welcome-no-methods', 'Welcome back! No linked methods'],
+        ['welcome-otp', 'Welcome back! Login methods + OTP'],
+        ['verify-otp', 'Verify OTP'],
+        ['verify-password', 'Verify password'],
+        ['email-entry', 'Introduce email'],
+        ['validate-email-otp', 'Validate email OTP page'],
+        ['social-3p', 'Select method and perform steps on 3rd party'],
+        ['send-otp-auto', 'Send OTP automatically (no user input)']
+      ];
+      STUBS.forEach(function (s) {
+        var el = document.createElement('section');
+        el.className = 'screen stub';
+        el.id = 'screen-' + s[0];
+        el.dataset.screen = s[0];
+        el.setAttribute('aria-label', s[1]);
+        el.innerHTML = '<span class="stub__tag">Design pending</span><h1></h1><p>Placeholder for this screen of the flow map.</p>';
+        el.querySelector('h1').textContent = s[1];
+        document.body.appendChild(el);
+      });
+
+      var screens = {};
+      document.querySelectorAll('.screen').forEach(function (el) { screens[el.dataset.screen] = el; });
+
+      function show(name) {
+        Object.keys(screens).forEach(function (k) {
+          screens[k].classList.toggle('is-active', k === name);
+        });
+      }
+
+      /* The wrapper page (map) asks for a screen by its data-screen id. */
+      window.addEventListener('message', function (event) {
+        if (event.origin !== window.location.origin) return;
+        var data = event.data;
+        if (!data) return;
+        if (data.type === 'goto-screen' && screens[data.screen]) show(data.screen);
+        /* User flags set by the wrapper. Screens can restyle with
+           html[data-high-risk="true"] in CSS or read the attribute in JS. */
+        if (data.type === 'set-flags') {
+          document.documentElement.dataset.highRisk = data.highRisk ? 'true' : 'false';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
