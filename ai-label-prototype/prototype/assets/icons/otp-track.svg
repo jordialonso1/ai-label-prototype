@@ -1,0 +1,6 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="367" height="8" viewBox="0 0 367 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="track">
+<path d="M0 4C0 1.79086 1.79086 0 4 0H363C365.209 0 367 1.79086 367 4V4C367 6.20914 365.209 8 363 8H4C1.79086 8 0 6.20914 0 4V4Z" fill="#F2F2F3"/>
+<path id="progress" d="M0 4C0 1.79086 1.79086 0 4 0H32.7C34.9091 0 36.7 1.79086 36.7 4V4C36.7 6.20914 34.9091 8 32.7 8H4.00001C1.79087 8 0 6.20914 0 4V4Z" fill="#009E81"/>
+</g>
+</svg>

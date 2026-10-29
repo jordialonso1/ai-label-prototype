@@ -790,6 +790,83 @@
       border-radius: 896px; background: var(--component-button-background-color-primary-enabled); color: #fff;
       display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; font-weight: 700; white-space: nowrap;
     }
+
+    /* OTP screen (Figma 266:35363 expanded, 266:35642 reduced): one screen, two banner states.
+       Closing the premium banner (data-otp-close) switches data-otp-state to "reduced". */
+    .otp__map { position: absolute; inset: 0; overflow: hidden; background: #e8e6e0; }
+    .otp__map img { position: absolute; max-width: none; }
+    .otp__map-base { inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+    .otp__map-overlay { left: 0; top: -12px; width: 100%; height: calc(100% + 23px); object-fit: cover; }
+    .otp__pin { position: absolute; }
+    .otp__pin img { position: static; width: 100%; height: 100%; }
+    .otp__pin--yellow { inset: 48.65% 11.73% 43.47% 66.93%; }
+    .otp__pin--green { inset: 59.73% 64.8% 32.39% 13.87%; }
+    .otp__header { position: absolute; top: 0; left: 0; right: 0; z-index: 3; background: #fff; padding-bottom: 8px; }
+    .otp__nav { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; }
+    .otp__nav-spacer { flex: 1; }
+    .otp__help {
+      min-height: 40px; min-width: 48px; padding: 8px; border-radius: 896px; background: var(--background-color-secondary);
+      display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; font-weight: 700;
+    }
+    .otp__help span { padding: 0 4px; }
+    .otp__card {
+      position: absolute; top: 102px; left: 0; right: 0; z-index: 2; background: #fff;
+      border-radius: 0 0 16px 16px; padding: 8px 12px 0; display: flex; flex-direction: column; gap: 16px;
+      box-shadow: 0 0 1px rgba(22, 23, 23, 0.05), 0 0 4px rgba(22, 23, 23, 0.21);
+    }
+    .otp__eta { height: 60px; display: flex; align-items: center; font-size: 28px; line-height: 32px; font-weight: 700; }
+    .otp__bar { overflow: hidden; }
+    .otp__bar img { width: 375px; max-width: none; height: 8px; }
+    .otp__status { position: relative; min-height: 56px; padding: 12px 0; display: flex; align-items: center; gap: 8px; }
+    .otp__avatar { width: 32px; height: 32px; flex: none; border-radius: 8px; overflow: hidden; }
+    .otp__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .otp__status p { margin: 0; padding: 4px 0; font-size: 14px; line-height: 20px; }
+    .otp__divider { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; }
+    .otp__divider img { width: 100%; height: 1px; }
+
+    .otp-banner {
+      position: absolute; left: 16px; right: 16px; bottom: 48px; z-index: 2;
+      opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(16px);
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0.4s;
+    }
+    #screen-otp[data-otp-state="expanded"] .otp-banner--expanded,
+    #screen-otp[data-otp-state="reduced"] .otp-banner--reduced {
+      opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition-delay: 0s;
+    }
+    #screen-otp[data-otp-state="expanded"] .otp-banner--reduced { transform: translateY(48px); }
+    #screen-otp[data-otp-state="reduced"] .otp-banner--expanded { transform: translateY(-24px); }
+    .otp-banner--expanded { border-radius: 16px; background: #fff; box-shadow: 0 0 1px rgba(22, 23, 23, 0.05), 0 0 4px rgba(22, 23, 23, 0.21); }
+    .otp-banner__img { position: relative; aspect-ratio: 343 / 197; }
+    .otp-banner__pic { position: absolute; inset: 0; overflow: hidden; border-radius: 16px 16px 0 0; }
+    .otp-banner__pic img { position: absolute; max-width: none; width: 143.12%; height: 123.35%; left: -0.12%; top: 0; }
+    .otp-banner__close { position: absolute; top: 16px; right: 16px; }
+    .otp-banner__ai { position: absolute; right: 8px; bottom: 8px; width: 16px; height: 16px; }
+    .otp-banner__head { padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; background: #fff; border-radius: 0 0 16px 16px; }
+    .otp-banner__title { margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; }
+    .otp-banner__row { display: flex; align-items: center; gap: 4px; }
+    .otp-banner__info { flex: 1; display: flex; align-items: center; gap: 4px; }
+    .otp-banner__infobtn { cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .otp-banner__infobtn img { width: 16px; height: 16px; }
+    .otp-banner__link { font-size: 16px; line-height: 20px; font-weight: 700; color: #035949; text-decoration: underline; }
+    .tag--ad { background: rgba(22, 23, 23, 0.05); color: var(--text-color-secondary); font-weight: 500; }
+    .otp-banner--reduced {
+      display: flex; align-items: center; height: 128px; background: #fff; border-radius: 12px;
+      box-shadow: 0 0 2px rgba(22, 23, 23, 0.05), 0 0 8px rgba(22, 23, 23, 0.21);
+    }
+    .otp-banner__content { width: 152px; flex: none; height: 128px; padding: 8px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .otp-banner--reduced .feat-banner__media { width: auto; flex: 1; border-radius: 0 12px 12px 0; }
+    /* Figma sizes the image against a 223px media box (the banner clips its right edge), so use px, not %. */
+    .otp-banner--reduced .feat-banner__media img { position: absolute; max-width: none; width: 276.3px; height: 136.8px; left: -0.2px; top: -4.4px; object-fit: fill; }
+    .otp-banner--reduced .feat-banner__go { right: 8px; bottom: 8px; }
+    .otp-banner__ai-r { position: absolute; right: 8px; bottom: 36px; width: 16px; height: 16px; }
+    html.highlight-ai .otp-banner__ai[data-ai-label],
+    html.highlight-ai .otp-banner__ai-r[data-ai-label] { --ai-gap: 8px; border-radius: 50%; }
+    @media (prefers-reduced-motion: reduce) { .otp-banner { transition-duration: 0.01s; } }
+
+    /* Groceries (Figma 282:39882): a full-bleed screenshot with the "Enhanced" tag on the ad banner. */
+    .groceries__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .groceries__back { position: absolute; left: 12px; top: 58px; width: 48px; height: 40px; }
+    .groceries__tag { position: absolute; right: 68.53%; bottom: 49.51%; }
   </style>
 </head>
 
@@ -915,21 +992,21 @@
             <img data-ai-label="Ads featured banner icon" class="feat-banner__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
           </div>
 
-          <article class="store-tile store-tile--v3 inert">
+          <article class="store-tile store-tile--v3" data-nav="groceries" role="link" tabindex="0" aria-label="El Súper de Glovo">
             <div class="store-tile__image">
-              <img class="store-tile__photo" src="assets/img/ametller-origen.png" alt="" />
-              <span class="avatar-sq avatar-sq--m"><img src="assets/img/logo-ametller-origen.png" alt="" /></span>
+              <img class="store-tile__photo" src="assets/img/el-super-de-glovo.png" alt="" />
+              <span class="avatar-sq avatar-sq--m"><img src="assets/img/logo-el-super-de-glovo.jpg" alt="" /></span>
               <div class="store-tile__tags">
                 <span class="tag-double"><span class="tag tag--promo">-20%</span><span class="tag tag--loyalty"><b>PRIME</b> -30%</span></span>
                 <span class="tag tag--neutral"><img src="assets/icons/house-16.svg" alt="" />Same prices as in store</span>
               </div>
               <span class="tag tag--positive store-tile__tag-br"><img src="assets/icons/carrot-16.svg" alt="" />Freshness guarantee</span>
-              <img data-ai-label="Store tile icon (Ametller Origen)" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+              <img data-ai-label="Store tile icon (Groceries)" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
               <div class="store-tile__toggle"><img src="assets/icons/heart.svg" alt="" /></div>
             </div>
             <div class="store-tile__desc">
               <div class="store-tile__name-row">
-                <div class="store-tile__name"><p>Ametller Origen</p></div>
+                <div class="store-tile__name"><p>El Súper de Glovo</p></div>
               </div>
               <div class="store-tile__status">
                 <div class="st-rating">
@@ -955,7 +1032,7 @@
               <div class="store-tile__content">
                 <div class="store-tile__top"><span class="tag tag--promo">2x1 in some products</span></div>
               </div>
-              <img data-ai-label="Store tile icon (Burger King)" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+              <img data-ai-label="Store tile icon (Less elements case)" class="store-tile__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
               <div class="store-tile__toggle"><img src="assets/icons/heart.svg" alt="" /></div>
             </div>
             <div class="store-tile__desc">
@@ -1006,7 +1083,7 @@
     </section>
 
     <!-- Screen 2: Store view (Figma 141:29225) -->
-    <section class="screen" id="screen-store-view" data-screen="store-view" aria-label="Store view">
+    <section class="screen" id="screen-store-view" data-screen="store-view" data-parent="store-wall" aria-label="Store view">
 
       <!-- Fixed nav: floats over the hero, turns white once the page scrolls -->
       <div class="sv-nav" id="sv-nav">
@@ -1301,7 +1378,7 @@
     </section>
 
     <!-- Screen 3: Product view (Figma 141:37235) -->
-    <section class="screen" id="screen-product-view" data-screen="product-view" aria-label="Product view">
+    <section class="screen" id="screen-product-view" data-screen="product-view" data-parent="store-view" aria-label="Product view">
 
       <!-- Fixed nav over the product image -->
       <div class="pv-nav">
@@ -1359,8 +1436,102 @@
       </div>
 
       <footer class="pv-footer">
-        <button class="pv-footer__btn inert" type="button">Add · 9,90€</button>
+        <button class="pv-footer__btn" type="button" data-nav="otp">Add · 9,90€</button>
       </footer>
+    </section>
+
+    <!-- Screen 4: OTP (Figma 266:35363 expanded + 266:35642 reduced). Reached from the Product view Add CTA. -->
+    <section class="screen" id="screen-otp" data-screen="otp" data-parent="product-view" data-otp-state="expanded" aria-label="OTP">
+      <div class="otp__map">
+        <img class="otp__map-base" src="assets/img/otp-map.png" alt="" />
+        <img class="otp__map-overlay" src="assets/img/otp-map-overlay.png" alt="" />
+        <div class="otp__pin otp__pin--yellow"><img src="assets/icons/otp-pin-yellow.svg" alt="" /></div>
+        <div class="otp__pin otp__pin--green"><img src="assets/icons/otp-pin-green.svg" alt="" /></div>
+      </div>
+
+      <header class="otp__header">
+        <div class="sb">
+          <div class="sb__time">9:41</div>
+          <div class="sb__spacer"></div>
+          <div class="sb__levels">
+            <img src="assets/icons/sb-cell-dark.svg" alt="" />
+            <img src="assets/icons/sb-wifi-dark.svg" alt="" />
+            <img src="assets/icons/sb-battery-dark.svg" alt="" />
+          </div>
+        </div>
+        <div class="otp__nav">
+          <button class="icon-btn icon-btn--neutral" type="button" data-back aria-label="Close"><img src="assets/icons/chevron-down-24.svg" alt="" /></button>
+          <div class="otp__nav-spacer"></div>
+          <button class="icon-btn icon-btn--neutral inert" type="button" tabindex="-1" aria-label="Info"><img src="assets/icons/nav-info-24.svg" alt="" /></button>
+          <button class="otp__help inert" type="button" tabindex="-1"><span>Help</span></button>
+        </div>
+      </header>
+
+      <div class="otp__card">
+        <div class="otp__eta">10:30 - 10:40</div>
+        <div class="otp__bar"><img src="assets/icons/otp-track.svg" alt="" /></div>
+        <div class="otp__status">
+          <span class="otp__avatar"><img src="assets/img/logo-healthy-poke.png" alt="" /></span>
+          <p>Healthy Poke has received your order</p>
+          <span class="otp__divider"><img src="assets/icons/otp-divider.svg" alt="" /></span>
+        </div>
+      </div>
+
+      <!-- Premium banner (expanded). The close button turns it into the reduced banner below. -->
+      <div class="otp-banner otp-banner--expanded" data-otp-banner="expanded">
+        <div class="otp-banner__img">
+          <div class="otp-banner__pic"><img src="assets/img/pepsi-banner.png" alt="" /></div>
+          <button class="icon-btn icon-btn--floating otp-banner__close" type="button" data-otp-close aria-label="Close"><img src="assets/icons/cross-24.svg" alt="" /></button>
+          <img data-ai-label="OTP premium banner icon" class="otp-banner__ai" src="assets/icons/ai-sparkle-light.svg" alt="" />
+        </div>
+        <div class="otp-banner__head">
+          <p class="otp-banner__title">Advertising from Pepsi</p>
+          <div class="otp-banner__row">
+            <div class="otp-banner__info">
+              <span class="tag tag--ad">Ad</span>
+              <span class="otp-banner__infobtn" data-modal-open="otp-ad-modal" role="button" tabindex="0" aria-label="Ad info"><img src="assets/icons/info-circle-16.svg" alt="" /></span>
+            </div>
+            <span class="otp-banner__link">Visit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured banner (reduced) -->
+      <div class="otp-banner otp-banner--reduced" data-otp-banner="reduced">
+        <div class="otp-banner__content">
+          <p class="otp-banner__title">Advertising from Pepsi</p>
+          <div class="feat-banner__info" data-modal-open="otp-ad-modal" role="button" tabindex="0"><span>Info</span><img src="assets/icons/info-circle-16.svg" alt="" /></div>
+        </div>
+        <div class="feat-banner__media"><img src="assets/img/pepsi-banner.png" alt="" /></div>
+        <div class="feat-banner__go"><img src="assets/icons/arrow-forward-16.svg" alt="" /></div>
+        <img data-ai-label="OTP featured banner icon" class="otp-banner__ai-r" src="assets/icons/ai-sparkle-light.svg" alt="" />
+      </div>
+
+      <!-- Ad modalsheet: same sheet as the Store wall one, opened by both banner info buttons -->
+      <div class="modal" id="otp-ad-modal" role="dialog" aria-modal="true" aria-labelledby="otp-ad-modal-title" aria-hidden="true">
+        <div class="modal__scrim" data-modal-close></div>
+        <div class="modal__sheet">
+          <img class="modal__top" src="assets/icons/modal-top.svg" alt="" />
+          <div class="modal__surface">
+            <div class="modal__header">
+              <h2 class="modal__title pintxo-typography-title2" id="otp-ad-modal-title">Paid Ad</h2>
+              <button class="icon-btn icon-btn--neutral modal__close" type="button" aria-label="Close" data-modal-close><img src="assets/icons/cross-24.svg" alt="" /></button>
+            </div>
+            <div class="modal__body">
+              <p class="pintxo-typography-body1">This ad has not been personalized nor is targeted on the basis of your account information or any prior browsing or purchasing activity. This ad is paid for by Pepsi.</p>
+              <span data-ai-label="OTP ads modal label" data-ai-after="OTP featured banner icon" class="tag tag--neutral"><img src="assets/icons/ai-sparkle-dark.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
+            </div>
+          </div>
+          <div class="modal__unsafe"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Groceries (Figma 282:39882). Reached from the "El Súper de Glovo" tile on the Store wall. -->
+    <section class="screen" id="screen-groceries" data-screen="groceries" data-parent="store-wall" aria-label="Groceries">
+      <img class="groceries__img" src="assets/img/groceries.jpg" alt="" />
+      <button class="groceries__back" type="button" data-back aria-label="Back"></button>
+      <span data-ai-label="Groceries banner label" class="tag tag--sponsored groceries__tag"><img src="assets/icons/ai-sparkle-light.svg" alt="" /><span data-tag-text="Enhanced" data-tag-text-reference="Reference">Enhanced</span></span>
     </section>
 
   </div>
@@ -1388,6 +1559,16 @@
         screens[el.dataset.screen] = el;
       });
       var history = ['store-wall'];
+
+      /* OTP: one screen, two banner states. Closing the premium banner reduces it. */
+      var otpScreen = document.getElementById('screen-otp');
+      function setOtpState(state) { otpScreen.setAttribute('data-otp-state', state); }
+      /* Screens declare their parent (data-parent) so the back stack can be rebuilt for any screen. */
+      function historyFor(name) {
+        var chain = [];
+        while (name) { chain.unshift(name); name = screens[name].dataset.parent; }
+        return chain;
+      }
 
       function show(name, resetScroll) {
         Object.keys(screens).forEach(function (key) {
@@ -1442,6 +1623,10 @@
           if (target) { setModal(target, true); }
           return;
         }
+        if (event.target.closest('[data-otp-close]')) {
+          setOtpState('reduced');
+          return;
+        }
         var closer = event.target.closest('[data-modal-close]');
         if (closer) {
           setModal(closer.closest('.modal'), false);
@@ -1449,6 +1634,7 @@
         }
         var forward = event.target.closest('[data-nav]');
         if (forward && screens[forward.dataset.nav]) {
+          if (forward.dataset.nav === 'otp') { setOtpState('expanded'); }
           history.push(forward.dataset.nav);
           show(forward.dataset.nav, true);
           return;
@@ -1512,14 +1698,15 @@
         var el = aiLabels[index];
         currentAiLabel = el;
         document.querySelectorAll('.modal.is-open').forEach(function (m) { setModal(m, false); });
-        var order = Object.keys(screens);
         var name = el.closest('.screen').dataset.screen;
-        history = order.slice(0, order.indexOf(name) + 1);
+        history = historyFor(name);
+        var otpBanner = el.closest('[data-otp-banner]');
+        if (otpBanner) { setOtpState(otpBanner.getAttribute('data-otp-banner')); }
         show(name, false);
         var modal = el.closest('.modal');
         if (modal) {
           setModal(modal, true);
-        } else {
+        } else if (el.closest('.screen__scroll')) {
           var scroller = el.closest('.screen__scroll');
           var box = el.getBoundingClientRect();
           var view = scroller.getBoundingClientRect();
